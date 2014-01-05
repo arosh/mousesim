@@ -115,14 +115,14 @@
             this.textbox_workdir.Location = new System.Drawing.Point(503, 58);
             this.textbox_workdir.Name = "textbox_workdir";
             this.textbox_workdir.Size = new System.Drawing.Size(153, 19);
-            this.textbox_workdir.TabIndex = 4;
+            this.textbox_workdir.TabIndex = 3;
             // 
             // btn_launch_fbd
             // 
             this.btn_launch_fbd.Location = new System.Drawing.Point(662, 56);
             this.btn_launch_fbd.Name = "btn_launch_fbd";
             this.btn_launch_fbd.Size = new System.Drawing.Size(75, 23);
-            this.btn_launch_fbd.TabIndex = 5;
+            this.btn_launch_fbd.TabIndex = 4;
             this.btn_launch_fbd.Text = "選択";
             this.btn_launch_fbd.UseVisualStyleBackColor = true;
             this.btn_launch_fbd.Click += new System.EventHandler(this.btn_launch_fbd_Click);
@@ -141,14 +141,14 @@
             this.textbox_command.Location = new System.Drawing.Point(503, 85);
             this.textbox_command.Name = "textbox_command";
             this.textbox_command.Size = new System.Drawing.Size(234, 19);
-            this.textbox_command.TabIndex = 7;
+            this.textbox_command.TabIndex = 5;
             // 
             // btn_exec
             // 
             this.btn_exec.Location = new System.Drawing.Point(431, 110);
             this.btn_exec.Name = "btn_exec";
             this.btn_exec.Size = new System.Drawing.Size(150, 59);
-            this.btn_exec.TabIndex = 8;
+            this.btn_exec.TabIndex = 6;
             this.btn_exec.Text = "実行";
             this.btn_exec.UseVisualStyleBackColor = true;
             this.btn_exec.Click += new System.EventHandler(this.btn_exec_Click);
@@ -158,7 +158,7 @@
             this.btn_stop.Location = new System.Drawing.Point(587, 110);
             this.btn_stop.Name = "btn_stop";
             this.btn_stop.Size = new System.Drawing.Size(150, 59);
-            this.btn_stop.TabIndex = 9;
+            this.btn_stop.TabIndex = 7;
             this.btn_stop.Text = "停止";
             this.btn_stop.UseVisualStyleBackColor = true;
             this.btn_stop.Click += new System.EventHandler(this.btn_stop_Click);
@@ -170,7 +170,7 @@
             this.listbox_output.Location = new System.Drawing.Point(431, 211);
             this.listbox_output.Name = "listbox_output";
             this.listbox_output.Size = new System.Drawing.Size(150, 220);
-            this.listbox_output.TabIndex = 10;
+            this.listbox_output.TabIndex = 8;
             // 
             // listbox_input
             // 
@@ -179,7 +179,7 @@
             this.listbox_input.Location = new System.Drawing.Point(587, 211);
             this.listbox_input.Name = "listbox_input";
             this.listbox_input.Size = new System.Drawing.Size(150, 220);
-            this.listbox_input.TabIndex = 11;
+            this.listbox_input.TabIndex = 9;
             // 
             // label3
             // 
@@ -213,14 +213,14 @@
             this.textbox_maze_file.Location = new System.Drawing.Point(503, 29);
             this.textbox_maze_file.Name = "textbox_maze_file";
             this.textbox_maze_file.Size = new System.Drawing.Size(153, 19);
-            this.textbox_maze_file.TabIndex = 15;
+            this.textbox_maze_file.TabIndex = 1;
             // 
             // btn_select_maze
             // 
             this.btn_select_maze.Location = new System.Drawing.Point(662, 27);
             this.btn_select_maze.Name = "btn_select_maze";
             this.btn_select_maze.Size = new System.Drawing.Size(75, 23);
-            this.btn_select_maze.TabIndex = 16;
+            this.btn_select_maze.TabIndex = 2;
             this.btn_select_maze.Text = "選択";
             this.btn_select_maze.UseVisualStyleBackColor = true;
             this.btn_select_maze.Click += new System.EventHandler(this.btn_select_maze_Click);

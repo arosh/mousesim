@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,12 +32,13 @@ namespace MouseSim
 
         private void btn_launch_fbd_Click(object sender, EventArgs e)
         {
-            var dialog = new FolderBrowserDialog();
-
-            if (dialog.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+            using (var dialog = new FolderBrowserDialog())
             {
-                string workdir = dialog.SelectedPath;
-                Update_textbox_workdir(workdir);
+                if (dialog.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+                {
+                    string workdir = dialog.SelectedPath;
+                    Update_textbox_workdir(workdir);
+                }
             }
         }
 
@@ -47,7 +49,7 @@ namespace MouseSim
 
         private void btn_exec_Click(object sender, EventArgs e)
         {
-
+            PaintArrow(15, 1, 5, 1);
         }
 
         private void btn_stop_Click(object sender, EventArgs e)
@@ -202,6 +204,22 @@ namespace MouseSim
             textbox_maze_file.Text = fname;
         }
 
+        private void PaintArrow(int from_x, int from_y, int to_x, int to_y)
+        {
+            int width = 25;
 
+            using (var pen = new Pen(Color.OrangeRed, 5))
+            {
+                using (pen.CustomEndCap = new AdjustableArrowCap(/* width = */ 3, /* height = */ 3))
+                {
+                    using (var g = GetGraphics())
+                    {
+                        g.DrawLine(pen, 2 + width * from_x + 11, 2 + width * from_y + 11, 2 + width * to_x + 11, 2 + width * to_y + 11);
+                    }
+                }
+            }
+
+            pictbox_field.Invalidate();
+        }
     }
 }
