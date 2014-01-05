@@ -47,14 +47,42 @@ namespace MouseSim
 
         private void btn_exec_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(this, "exec button clicked");
+
         }
 
         private void btn_stop_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(this, "stop button clicked");
-        }
-        
 
+        }
+
+        private void AddOutputEntry(string msg)
+        {
+            listbox_output.Items.Add(msg);
+        }
+
+        private void AddInputEntry(string msg)
+        {
+            listbox_input.Items.Add(msg);
+        }
+
+        private void AddOutputEntry(IEnumerable<string> msgs)
+        {
+            listbox_output.Items.AddRange(msgs.ToArray());
+        }
+
+        private void AddInputEntry(IEnumerable<string> msgs)
+        {
+            listbox_input.Items.AddRange(msgs.ToArray());
+        }
+
+        private void ClearOutputEntry()
+        {
+            listbox_output.Items.Clear();
+        }
+
+        private void ClearInputEntry()
+        {
+            listbox_input.Items.Clear();
+        }
     }
 }
