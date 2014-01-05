@@ -45,6 +45,9 @@
             this.listbox_input = new System.Windows.Forms.ListBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.textbox_maze_file = new System.Windows.Forms.TextBox();
+            this.btn_select_maze = new System.Windows.Forms.Button();
             this.menustrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictbox_field)).BeginInit();
             this.SuspendLayout();
@@ -73,7 +76,7 @@
             this.終了XToolStripMenuItem.Name = "終了XToolStripMenuItem";
             this.終了XToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.終了XToolStripMenuItem.Text = "終了(&X)";
-            this.終了XToolStripMenuItem.Click += new System.EventHandler(this.MenuItem_Close_Click);
+            this.終了XToolStripMenuItem.Click += new System.EventHandler(this.menuitem_Close_Click);
             // 
             // ヘルプHToolStripMenuItem
             // 
@@ -88,20 +91,20 @@
             this.mouseSimのバージョン情報ToolStripMenuItem.Name = "mouseSimのバージョン情報ToolStripMenuItem";
             this.mouseSimのバージョン情報ToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
             this.mouseSimのバージョン情報ToolStripMenuItem.Text = "MouseSim のバージョン情報(&A)";
-            this.mouseSimのバージョン情報ToolStripMenuItem.Click += new System.EventHandler(this.MenuItem_VersionInfo_Click);
+            this.mouseSimのバージョン情報ToolStripMenuItem.Click += new System.EventHandler(this.menuitem_VersionInfo_Click);
             // 
             // pictbox_field
             // 
             this.pictbox_field.Location = new System.Drawing.Point(12, 27);
             this.pictbox_field.Name = "pictbox_field";
-            this.pictbox_field.Size = new System.Drawing.Size(400, 400);
+            this.pictbox_field.Size = new System.Drawing.Size(404, 404);
             this.pictbox_field.TabIndex = 2;
             this.pictbox_field.TabStop = false;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(419, 58);
+            this.label1.Location = new System.Drawing.Point(422, 61);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(78, 12);
             this.label1.TabIndex = 3;
@@ -109,14 +112,14 @@
             // 
             // textbox_workdir
             // 
-            this.textbox_workdir.Location = new System.Drawing.Point(503, 55);
+            this.textbox_workdir.Location = new System.Drawing.Point(503, 58);
             this.textbox_workdir.Name = "textbox_workdir";
             this.textbox_workdir.Size = new System.Drawing.Size(153, 19);
             this.textbox_workdir.TabIndex = 4;
             // 
             // btn_launch_fbd
             // 
-            this.btn_launch_fbd.Location = new System.Drawing.Point(662, 53);
+            this.btn_launch_fbd.Location = new System.Drawing.Point(662, 56);
             this.btn_launch_fbd.Name = "btn_launch_fbd";
             this.btn_launch_fbd.Size = new System.Drawing.Size(75, 23);
             this.btn_launch_fbd.TabIndex = 5;
@@ -127,7 +130,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(433, 83);
+            this.label2.Location = new System.Drawing.Point(433, 88);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(64, 12);
             this.label2.TabIndex = 6;
@@ -135,14 +138,14 @@
             // 
             // textbox_command
             // 
-            this.textbox_command.Location = new System.Drawing.Point(503, 80);
+            this.textbox_command.Location = new System.Drawing.Point(503, 85);
             this.textbox_command.Name = "textbox_command";
             this.textbox_command.Size = new System.Drawing.Size(234, 19);
             this.textbox_command.TabIndex = 7;
             // 
             // btn_exec
             // 
-            this.btn_exec.Location = new System.Drawing.Point(431, 105);
+            this.btn_exec.Location = new System.Drawing.Point(431, 110);
             this.btn_exec.Name = "btn_exec";
             this.btn_exec.Size = new System.Drawing.Size(150, 59);
             this.btn_exec.TabIndex = 8;
@@ -152,7 +155,7 @@
             // 
             // btn_stop
             // 
-            this.btn_stop.Location = new System.Drawing.Point(587, 105);
+            this.btn_stop.Location = new System.Drawing.Point(587, 110);
             this.btn_stop.Name = "btn_stop";
             this.btn_stop.Size = new System.Drawing.Size(150, 59);
             this.btn_stop.TabIndex = 9;
@@ -164,7 +167,7 @@
             // 
             this.listbox_output.FormattingEnabled = true;
             this.listbox_output.ItemHeight = 12;
-            this.listbox_output.Location = new System.Drawing.Point(431, 207);
+            this.listbox_output.Location = new System.Drawing.Point(431, 211);
             this.listbox_output.Name = "listbox_output";
             this.listbox_output.Size = new System.Drawing.Size(150, 220);
             this.listbox_output.TabIndex = 10;
@@ -173,7 +176,7 @@
             // 
             this.listbox_input.FormattingEnabled = true;
             this.listbox_input.ItemHeight = 12;
-            this.listbox_input.Location = new System.Drawing.Point(587, 207);
+            this.listbox_input.Location = new System.Drawing.Point(587, 211);
             this.listbox_input.Name = "listbox_input";
             this.listbox_input.Size = new System.Drawing.Size(150, 220);
             this.listbox_input.TabIndex = 11;
@@ -181,7 +184,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(462, 192);
+            this.label3.Location = new System.Drawing.Point(462, 196);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(88, 12);
             this.label3.TabIndex = 12;
@@ -190,17 +193,46 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(618, 192);
+            this.label4.Location = new System.Drawing.Point(618, 196);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(88, 12);
             this.label4.TabIndex = 13;
             this.label4.Text = "AI → シミュレータ";
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(434, 32);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(63, 12);
+            this.label5.TabIndex = 14;
+            this.label5.Text = "迷路ファイル";
+            // 
+            // textbox_maze_file
+            // 
+            this.textbox_maze_file.Location = new System.Drawing.Point(503, 29);
+            this.textbox_maze_file.Name = "textbox_maze_file";
+            this.textbox_maze_file.Size = new System.Drawing.Size(153, 19);
+            this.textbox_maze_file.TabIndex = 15;
+            // 
+            // btn_select_maze
+            // 
+            this.btn_select_maze.Location = new System.Drawing.Point(662, 27);
+            this.btn_select_maze.Name = "btn_select_maze";
+            this.btn_select_maze.Size = new System.Drawing.Size(75, 23);
+            this.btn_select_maze.TabIndex = 16;
+            this.btn_select_maze.Text = "選択";
+            this.btn_select_maze.UseVisualStyleBackColor = true;
+            this.btn_select_maze.Click += new System.EventHandler(this.btn_select_maze_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(749, 439);
+            this.ClientSize = new System.Drawing.Size(749, 443);
+            this.Controls.Add(this.btn_select_maze);
+            this.Controls.Add(this.textbox_maze_file);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.listbox_input);
@@ -246,6 +278,9 @@
         private System.Windows.Forms.ListBox listbox_input;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox textbox_maze_file;
+        private System.Windows.Forms.Button btn_select_maze;
     }
 }
 
