@@ -33,7 +33,7 @@ namespace MouseSim
             {
                 if (maze == null)
                 {
-                    throw new InvalidOperationException("まだ迷路ファイルを読み込んでいないのに、迷路の情報を取り出そうとしました");
+                    throw new InvalidOperationException("まだ迷路ファイルを読み込んでいないのに、迷路の情報を取り出そうとしました。");
                 }
 
                 return maze;
