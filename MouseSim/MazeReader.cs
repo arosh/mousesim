@@ -26,7 +26,7 @@ namespace MouseSim
         {
             var lines = File.ReadAllLines(ifname);
 
-            var separator = new char[] { ' ' };
+            char[] separator = { ' ' };
             string[] seq;
 
             int linePtr = 0;
@@ -42,9 +42,9 @@ namespace MouseSim
                 throw new IOException("迷路ファイルの行数がおかしいです");
             }
 
-            int startX, startY;
+            int startX, startY, dir;
             seq = lines[linePtr++].Split(separator, StringSplitOptions.RemoveEmptyEntries);
-            if (int.TryParse(seq[0], out startX) == false || int.TryParse(seq[1], out startY) == false)
+            if (int.TryParse(seq[0], out startX) == false || int.TryParse(seq[1], out startY) == false || int.TryParse(seq[2], out dir) == false)
             {
                 throw new IOException("迷路ファイルの2行目が不正です。");
             }
@@ -56,7 +56,7 @@ namespace MouseSim
                 throw new IOException("迷路ファイルの3行目が不正です。");
             }
 
-            var maze = new Maze(size, startX, startY, goalX, goalY, goalW, goalH);
+            var maze = new Maze(size, startX, startY, (Direction)dir, goalX, goalY, goalW, goalH);
             for (int y = 0; y < size; y++)
             {
                 string line = lines[linePtr++];

@@ -3,17 +3,20 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace MouseSim
 {
     public partial class View : Form
     {
-        Controller ctrl;
+        private Controller ctrl;
+        private CancellationTokenSource cts;
 
         public View()
         {
             InitializeComponent();
             ctrl = new Controller(this);
+            cts = null;
         }
 
         private void menuitem_close_Clicked(object sender, EventArgs e)
@@ -45,7 +48,7 @@ namespace MouseSim
             textbox_workdir.Text = workdir;
         }
 
-        private void btn_exec_Clicked(object sender, EventArgs e)
+        private async void btn_exec_Clicked(object sender, EventArgs e)
         {
             if (ctrl.IsMazeReady == false)
             {
@@ -53,12 +56,33 @@ namespace MouseSim
                 return;
             }
 
-            DrawArrow(15, 1, 5, 1);
+            // http://msdn.microsoft.com/ja-jp/library/jj155759.aspx
+            cts = new CancellationTokenSource();
+
+            try
+            {
+                await ctrl.DebugRun(cts.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                // do nothing
+            }
+
+            cts = null;
         }
 
         private void btn_stop_Clicked(object sender, EventArgs e)
         {
+            if (ctrl.IsMazeReady == false)
+            {
+                MessageBox.Show(this, "まだ迷路ファイルを読み込んでいません、");
+                return;
+            }
 
+            if (cts != null)
+            {
+                cts.Cancel();
+            }
         }
 
         private void Add_listbox_output(string msg)
@@ -158,6 +182,16 @@ namespace MouseSim
             {
                 Graphicer.DrawGoal(g, picture_maze.Size, maze);
                 Graphicer.DrawMaze(g, picture_maze.Size, maze);
+            });
+
+            picture_maze.Invalidate();
+        }
+
+        public void DrawAgent(Maze maze, Simulator sim)
+        {
+            BeginDraw(g =>
+            {
+                Graphicer.DrawAgent(g, picture_maze.Size, maze, sim);
             });
 
             picture_maze.Invalidate();

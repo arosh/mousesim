@@ -12,6 +12,7 @@ namespace MouseSim
         public int Size { get; private set; }
         public int StartX { get; private set; }
         public int StartY { get; private set; }
+        public Direction StartDir { get; private set; }
 
         public int GoalX { get; private set; }
         public int GoalY { get; private set; }
@@ -20,11 +21,12 @@ namespace MouseSim
 
         private bool[, ,] has_wall;
 
-        public Maze(int size, int startX, int startY, int goalX, int goalY, int goalW, int goalH)
+        public Maze(int size, int startX, int startY, Direction startDir, int goalX, int goalY, int goalW, int goalH)
         {
             this.Size = size;
             this.StartX = startX;
             this.StartY = startY;
+            this.StartDir = startDir;
 
             this.GoalX = goalX;
             this.GoalY = goalY;
@@ -78,7 +80,7 @@ namespace MouseSim
             has_wall[nx, ny, ((int)dir + 2) % 4] = true;
         }
 
-        private void AssertRange(int x, int y)
+        public void AssertRange(int x, int y)
         {
             if (x < 0 || x >= Size)
             {

@@ -72,5 +72,55 @@ namespace MouseSim
 
             g.FillRectangle(brush, x, y, width, height);
         }
+
+        public static void DrawAgent(Graphics g, Size imageSize, Maze maze, Simulator sim)
+        {
+            int x = sim.X;
+            int y = sim.Y;
+            Direction dir = sim.Dir;
+
+            int cellLength = (imageSize.Width - kBorderWidth) / maze.Size;
+            Brush brush = Brushes.Green;
+
+            Point[] points;
+            if (dir == Direction.Top)
+            {
+                points = new Point[] {
+                    new Point(cellLength * x + kBorderWidth + (cellLength - kBorderWidth) * 1 / 2, cellLength * y + kBorderWidth + (cellLength - kBorderWidth) * 1 / 8),
+                    new Point(cellLength * x + kBorderWidth + (cellLength - kBorderWidth) * 1 / 5, cellLength * y + kBorderWidth + (cellLength - kBorderWidth) * 7 / 8),
+                    new Point(cellLength * x + kBorderWidth + (cellLength - kBorderWidth) * 4 / 5, cellLength * y + kBorderWidth + (cellLength - kBorderWidth) * 7 / 8)
+                };
+            }
+            else if (dir == Direction.Left)
+            {
+                points = new Point[] {
+                    new Point(cellLength * x + kBorderWidth + (cellLength - kBorderWidth) * 1 / 8, cellLength * y + kBorderWidth + (cellLength - kBorderWidth) * 1 / 2),
+                    new Point(cellLength * x + kBorderWidth + (cellLength - kBorderWidth) * 7 / 8, cellLength * y + kBorderWidth + (cellLength - kBorderWidth) * 1 / 5),
+                    new Point(cellLength * x + kBorderWidth + (cellLength - kBorderWidth) * 7 / 8, cellLength * y + kBorderWidth + (cellLength - kBorderWidth) * 4 / 5)
+                };
+            }
+            else if (dir == Direction.Bottom)
+            {
+                points = new Point[] {
+                    new Point(cellLength * x + kBorderWidth + (cellLength - kBorderWidth) * 1 / 2, cellLength * y + kBorderWidth + (cellLength - kBorderWidth) * 7 / 8),
+                    new Point(cellLength * x + kBorderWidth + (cellLength - kBorderWidth) * 1 / 5, cellLength * y + kBorderWidth + (cellLength - kBorderWidth) * 1 / 8),
+                    new Point(cellLength * x + kBorderWidth + (cellLength - kBorderWidth) * 4 / 5, cellLength * y + kBorderWidth + (cellLength - kBorderWidth) * 1 / 8)
+                };
+            }
+            else if (dir == Direction.Right)
+            {
+                points = new Point[] {
+                    new Point(cellLength * x + kBorderWidth + (cellLength - kBorderWidth) * 7 / 8, cellLength * y + kBorderWidth + (cellLength - kBorderWidth) * 1 / 2),
+                    new Point(cellLength * x + kBorderWidth + (cellLength - kBorderWidth) * 1 / 8, cellLength * y + kBorderWidth + (cellLength - kBorderWidth) * 1 / 5),
+                    new Point(cellLength * x + kBorderWidth + (cellLength - kBorderWidth) * 1 / 8, cellLength * y + kBorderWidth + (cellLength - kBorderWidth) * 4 / 5)
+                };
+            }
+            else
+            {
+                points = null;
+            }
+
+            g.FillPolygon(brush, points);
+        }
     }
 }

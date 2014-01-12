@@ -59,8 +59,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AgentCommunicator.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="Graphicer.cs" />
+    <Compile Include="Simulator.cs" />
     <Compile Include="View.cs">
       <SubType>Form</SubType>
     </Compile>
