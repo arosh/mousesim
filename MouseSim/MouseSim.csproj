@@ -60,7 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MouseSimController.cs" />
-    <Compile Include="MouseSimGraphics.cs" />
+    <Compile Include="MouseSimGraphicer.cs" />
     <Compile Include="MouseSimView.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -10,16 +10,32 @@ namespace MouseSim
     public class MouseMaze
     {
         public int Size { get; private set; }
+        public int StartX { get; private set; }
+        public int StartY { get; private set; }
+
+        public int GoalX { get; private set; }
+        public int GoalY { get; private set; }
+        public int GoalW { get; private set; }
+        public int GoalH { get; private set; }
+
         private bool[, ,] has_wall;
 
-        public MouseMaze(int size)
+        public MouseMaze(int size, int startX, int startY, int goalX, int goalY, int goalW, int goalH)
         {
             this.Size = size;
+            this.StartX = startX;
+            this.StartY = startY;
+
+            this.GoalX = goalX;
+            this.GoalY = goalY;
+            this.GoalW = goalW;
+            this.GoalH = goalH;
+
             has_wall = new bool[size, size, 4];
             Clear();
         }
 
-        public void Clear()
+        private void Clear()
         {
             for (int i = 0; i < Size; i++)
             {
@@ -80,6 +96,11 @@ namespace MouseSim
             AssertRange(x, y);
 
             return has_wall[x, y, (int)dir];
+        }
+
+        public bool IsGoalArea(int x, int y)
+        {
+            return GoalX <= x && x < GoalX + GoalW && GoalY <= y && y < GoalY + GoalH;
         }
     }
 }

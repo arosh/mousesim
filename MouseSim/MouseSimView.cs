@@ -47,6 +47,12 @@ namespace MouseSim
 
         private void btn_exec_Clicked(object sender, EventArgs e)
         {
+            if (ctrl.IsMazeReady == false)
+            {
+                MessageBox.Show(this, "まだ迷路ファイルを読み込んでいません、");
+                return;
+            }
+
             DrawArrow(15, 1, 5, 1);
         }
 
@@ -110,7 +116,7 @@ namespace MouseSim
         {
             if (picture_maze.Image == null)
             {
-                picture_maze.Image = new Bitmap(picture_maze.Width, picture_maze.Height); ;
+                picture_maze.Image = new Bitmap(picture_maze.Width, picture_maze.Height);
             }
 
             using (var g = Graphics.FromImage(picture_maze.Image))
@@ -125,6 +131,8 @@ namespace MouseSim
             {
                 g.Clear(Color.White);
             });
+
+            picture_maze.Invalidate();
         }
 
         private void Update_textbox_maze_file(string fname)
@@ -132,13 +140,11 @@ namespace MouseSim
             textbox_maze_file.Text = fname;
         }
 
-        // Graphicsだけ渡したらマップを描画してくれるGraphicerクラスを作ったほうがいいような気がしてきた
-
         public void DrawArrow(int from_x, int from_y, int to_x, int to_y)
         {
             BeginDraw(g =>
             {
-                MouseSimGraphicer.DrawArrow(g, picture_maze.Size, from_x, from_y, to_x, to_y);
+                MouseSimGraphicer.DrawArrow(g, picture_maze.Size, ctrl.Maze, from_x, from_y, to_x, to_y);
             });
 
             picture_maze.Invalidate();
@@ -150,6 +156,7 @@ namespace MouseSim
 
             BeginDraw(g =>
             {
+                MouseSimGraphicer.DrawGoal(g, picture_maze.Size, maze);
                 MouseSimGraphicer.DrawMaze(g, picture_maze.Size, maze);
             });
 

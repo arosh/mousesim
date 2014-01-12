@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MouseSim
 {
@@ -15,6 +11,27 @@ namespace MouseSim
         {
             this.view = view;
             this.maze = null;
+        }
+
+        public bool IsMazeReady
+        {
+            get
+            {
+                return maze != null;
+            }
+        }
+
+        public MouseMaze Maze
+        {
+            get
+            {
+                if (maze == null)
+                {
+                    throw new InvalidOperationException("まだ迷路ファイルを読み込んでいないのに、迷路の情報を取り出そうとしました");
+                }
+
+                return maze;
+            }
         }
 
         public void LoadMaze()
