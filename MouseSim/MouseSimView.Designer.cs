@@ -1,6 +1,6 @@
 ﻿namespace MouseSim
 {
-    partial class MainWindow
+    partial class MouseSimView
     {
         /// <summary>
         /// 必要なデザイナー変数です。
@@ -33,7 +33,7 @@
             this.終了XToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ヘルプHToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mouseSimのバージョン情報ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pictbox_field = new System.Windows.Forms.PictureBox();
+            this.picture_maze = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.textbox_workdir = new System.Windows.Forms.TextBox();
             this.btn_launch_fbd = new System.Windows.Forms.Button();
@@ -49,7 +49,7 @@
             this.textbox_maze_file = new System.Windows.Forms.TextBox();
             this.btn_select_maze = new System.Windows.Forms.Button();
             this.menustrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictbox_field)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picture_maze)).BeginInit();
             this.SuspendLayout();
             // 
             // menustrip
@@ -76,7 +76,7 @@
             this.終了XToolStripMenuItem.Name = "終了XToolStripMenuItem";
             this.終了XToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.終了XToolStripMenuItem.Text = "終了(&X)";
-            this.終了XToolStripMenuItem.Click += new System.EventHandler(this.menuitem_Close_Click);
+            this.終了XToolStripMenuItem.Click += new System.EventHandler(this.menuitem_close_Clicked);
             // 
             // ヘルプHToolStripMenuItem
             // 
@@ -91,15 +91,15 @@
             this.mouseSimのバージョン情報ToolStripMenuItem.Name = "mouseSimのバージョン情報ToolStripMenuItem";
             this.mouseSimのバージョン情報ToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
             this.mouseSimのバージョン情報ToolStripMenuItem.Text = "MouseSim のバージョン情報(&A)";
-            this.mouseSimのバージョン情報ToolStripMenuItem.Click += new System.EventHandler(this.menuitem_VersionInfo_Click);
+            this.mouseSimのバージョン情報ToolStripMenuItem.Click += new System.EventHandler(this.menuitem_info_Clicked);
             // 
-            // pictbox_field
+            // picture_field
             // 
-            this.pictbox_field.Location = new System.Drawing.Point(12, 27);
-            this.pictbox_field.Name = "pictbox_field";
-            this.pictbox_field.Size = new System.Drawing.Size(404, 404);
-            this.pictbox_field.TabIndex = 2;
-            this.pictbox_field.TabStop = false;
+            this.picture_maze.Location = new System.Drawing.Point(12, 27);
+            this.picture_maze.Name = "picture_field";
+            this.picture_maze.Size = new System.Drawing.Size(404, 404);
+            this.picture_maze.TabIndex = 2;
+            this.picture_maze.TabStop = false;
             // 
             // label1
             // 
@@ -125,7 +125,7 @@
             this.btn_launch_fbd.TabIndex = 4;
             this.btn_launch_fbd.Text = "選択";
             this.btn_launch_fbd.UseVisualStyleBackColor = true;
-            this.btn_launch_fbd.Click += new System.EventHandler(this.btn_launch_fbd_Click);
+            this.btn_launch_fbd.Click += new System.EventHandler(this.btn_launch_fbd_Clicked);
             // 
             // label2
             // 
@@ -151,7 +151,7 @@
             this.btn_exec.TabIndex = 6;
             this.btn_exec.Text = "実行";
             this.btn_exec.UseVisualStyleBackColor = true;
-            this.btn_exec.Click += new System.EventHandler(this.btn_exec_Click);
+            this.btn_exec.Click += new System.EventHandler(this.btn_exec_Clicked);
             // 
             // btn_stop
             // 
@@ -161,7 +161,7 @@
             this.btn_stop.TabIndex = 7;
             this.btn_stop.Text = "停止";
             this.btn_stop.UseVisualStyleBackColor = true;
-            this.btn_stop.Click += new System.EventHandler(this.btn_stop_Click);
+            this.btn_stop.Click += new System.EventHandler(this.btn_stop_Clicked);
             // 
             // listbox_output
             // 
@@ -223,9 +223,9 @@
             this.btn_select_maze.TabIndex = 2;
             this.btn_select_maze.Text = "選択";
             this.btn_select_maze.UseVisualStyleBackColor = true;
-            this.btn_select_maze.Click += new System.EventHandler(this.btn_select_maze_Click);
+            this.btn_select_maze.Click += new System.EventHandler(this.btn_select_maze_Clicked);
             // 
-            // MainWindow
+            // MouseSimView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -244,16 +244,16 @@
             this.Controls.Add(this.btn_launch_fbd);
             this.Controls.Add(this.textbox_workdir);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.pictbox_field);
+            this.Controls.Add(this.picture_maze);
             this.Controls.Add(this.menustrip);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.menustrip;
             this.MaximizeBox = false;
-            this.Name = "MainWindow";
+            this.Name = "MouseSimView";
             this.Text = "MouseSim";
             this.menustrip.ResumeLayout(false);
             this.menustrip.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictbox_field)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picture_maze)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -266,7 +266,7 @@
         private System.Windows.Forms.ToolStripMenuItem 終了XToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ヘルプHToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem mouseSimのバージョン情報ToolStripMenuItem;
-        private System.Windows.Forms.PictureBox pictbox_field;
+        private System.Windows.Forms.PictureBox picture_maze;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textbox_workdir;
         private System.Windows.Forms.Button btn_launch_fbd;

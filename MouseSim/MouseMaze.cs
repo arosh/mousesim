@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MouseSim
 {
-    enum Direction
+    public enum Direction
     {
         Top, Left, Bottom, Right
     }
 
-    class MouseMaze
+    public class MouseMaze
     {
         public int Size { get; private set; }
         private bool[, ,] has_wall;
