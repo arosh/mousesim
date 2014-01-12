@@ -3,11 +3,11 @@ using System.Drawing.Drawing2D;
 
 namespace MouseSim
 {
-    static class MouseSimGraphicer
+    static class Graphicer
     {
         private const int kBorderWidth = 4;
 
-        public static void DrawMaze(Graphics g, Size imageSize, MouseMaze maze)
+        public static void DrawMaze(Graphics g, Size imageSize, Maze maze)
         {
             int cellLength = (imageSize.Width - kBorderWidth) / maze.Size;
 
@@ -40,7 +40,7 @@ namespace MouseSim
             }
         }
 
-        public static void DrawArrow(Graphics g, Size imageSize, MouseMaze maze, int from_x, int from_y, int to_x, int to_y)
+        public static void DrawArrow(Graphics g, Size imageSize, Maze maze, int from_x, int from_y, int to_x, int to_y)
         {
             int offset = kBorderWidth / 2;
             int cellLength = (imageSize.Width - kBorderWidth) / maze.Size;
@@ -59,7 +59,7 @@ namespace MouseSim
             }
         }
 
-        public static void DrawGoal(Graphics g, Size imageSize, MouseMaze maze)
+        public static void DrawGoal(Graphics g, Size imageSize, Maze maze)
         {
             int cellLength = (imageSize.Width - kBorderWidth) / maze.Size;
 

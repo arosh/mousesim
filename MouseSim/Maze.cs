@@ -7,7 +7,7 @@ namespace MouseSim
         Top, Left, Bottom, Right
     }
 
-    public class MouseMaze
+    public class Maze
     {
         public int Size { get; private set; }
         public int StartX { get; private set; }
@@ -20,7 +20,7 @@ namespace MouseSim
 
         private bool[, ,] has_wall;
 
-        public MouseMaze(int size, int startX, int startY, int goalX, int goalY, int goalW, int goalH)
+        public Maze(int size, int startX, int startY, int goalX, int goalY, int goalW, int goalH)
         {
             this.Size = size;
             this.StartX = startX;

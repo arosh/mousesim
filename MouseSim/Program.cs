@@ -13,7 +13,7 @@ namespace MouseSim
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MouseSimView());
+            Application.Run(new View());
         }
     }
 }

@@ -6,14 +6,14 @@ using System.Windows.Forms;
 
 namespace MouseSim
 {
-    public partial class MouseSimView : Form
+    public partial class View : Form
     {
-        MouseSimController ctrl;
+        Controller ctrl;
 
-        public MouseSimView()
+        public View()
         {
             InitializeComponent();
-            ctrl = new MouseSimController(this);
+            ctrl = new Controller(this);
         }
 
         private void menuitem_close_Clicked(object sender, EventArgs e)
@@ -144,20 +144,20 @@ namespace MouseSim
         {
             BeginDraw(g =>
             {
-                MouseSimGraphicer.DrawArrow(g, picture_maze.Size, ctrl.Maze, from_x, from_y, to_x, to_y);
+                Graphicer.DrawArrow(g, picture_maze.Size, ctrl.Maze, from_x, from_y, to_x, to_y);
             });
 
             picture_maze.Invalidate();
         }
 
-        public void DrawMaze(MouseMaze maze)
+        public void DrawMaze(Maze maze)
         {
             Clear_picture_maze();
 
             BeginDraw(g =>
             {
-                MouseSimGraphicer.DrawGoal(g, picture_maze.Size, maze);
-                MouseSimGraphicer.DrawMaze(g, picture_maze.Size, maze);
+                Graphicer.DrawGoal(g, picture_maze.Size, maze);
+                Graphicer.DrawMaze(g, picture_maze.Size, maze);
             });
 
             picture_maze.Invalidate();

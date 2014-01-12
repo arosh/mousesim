@@ -4,7 +4,7 @@ using System.IO;
 
 namespace MouseSim
 {
-    static class MouseMazeReader
+    static class MazeReader
     {
         /* 
          * 仕様
@@ -22,7 +22,7 @@ namespace MouseSim
          * 
          */
 
-        public static MouseMaze Load(string ifname)
+        public static Maze Load(string ifname)
         {
             var lines = File.ReadAllLines(ifname);
 
@@ -56,7 +56,7 @@ namespace MouseSim
                 throw new IOException("迷路ファイルの3行目が不正です。");
             }
 
-            var maze = new MouseMaze(size, startX, startY, goalX, goalY, goalW, goalH);
+            var maze = new Maze(size, startX, startY, goalX, goalY, goalW, goalH);
             for (int y = 0; y < size; y++)
             {
                 string line = lines[linePtr++];

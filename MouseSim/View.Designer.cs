@@ -1,6 +1,6 @@
 ﻿namespace MouseSim
 {
-    partial class MouseSimView
+    partial class View
     {
         /// <summary>
         /// 必要なデザイナー変数です。

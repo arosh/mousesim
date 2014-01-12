@@ -2,12 +2,12 @@
 
 namespace MouseSim
 {
-    class MouseSimController
+    class Controller
     {
-        private MouseSimView view;
-        private MouseMaze maze;
+        private View view;
+        private Maze maze;
 
-        public MouseSimController(MouseSimView view)
+        public Controller(View view)
         {
             this.view = view;
             this.maze = null;
@@ -21,7 +21,7 @@ namespace MouseSim
             }
         }
 
-        public MouseMaze Maze
+        public Maze Maze
         {
             get
             {
@@ -37,7 +37,7 @@ namespace MouseSim
         public void LoadMaze()
         {
             string maze_file = view.MazeFile;
-            maze = MouseMazeReader.Load(maze_file);
+            maze = MazeReader.Load(maze_file);
             view.DrawMaze(maze);
         }
     }
