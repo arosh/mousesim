@@ -216,8 +216,12 @@ namespace MouseSim
                             case 'R':
                                 await TurnRight(ct);
                                 break;
-                            case 'G':
-                                view.Add_listbox_siminfo("ゴールしたと主張しています");
+                            case 'S':
+                                view.Add_listbox_siminfo("リスタートします。");
+                                sim.Reset();
+                                break;
+                            case 'X':
+                                view.Add_listbox_siminfo("終了しました。");
                                 end = true;
                                 break;
                             default:

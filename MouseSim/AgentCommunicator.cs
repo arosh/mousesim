@@ -25,7 +25,8 @@ namespace MouseSim
      * F x -> xマス前進する
      * L   -> 左に回転する
      * R   -> 右に回転する
-     * G   -> 競技を終了する (ゴールした)
+     * X   -> 終了する
+     * S   -> リセット
      */
     public class AgentCommunicator : IDisposable
     {

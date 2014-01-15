@@ -22,7 +22,8 @@ bool IsGoal(
 	const int goal_x, const int goal_y, const int goal_w, const int goal_h);
 void GoForward(int *pos_x, int *pos_y, const int pos_dir);
 
-void SubmitGoal(void);
+void SubmitRestart(void);
+void SubmitStop(void);
 void SubmitTurnLeft(void);
 void SubmitGoForward(const int num_blocks);
 void SubmitTurnRight(void);
@@ -51,7 +52,7 @@ int main(int argc, const char *argv[]) {
 
 		if (IsGoal(pos_x, pos_y, goal_x, goal_y, goal_w, goal_h))
 		{
-			SubmitGoal();
+			SubmitStop();
 			break;
 		}
 
@@ -112,8 +113,13 @@ void GoForward(int *pos_x, int *pos_y, const int pos_dir) {
 	*pos_y += dy[pos_dir];
 }
 
-void SubmitGoal(void) {
-	puts("G");
+void SubmitRestart(void) {
+	puts("S");
+	fflush(stdout);
+}
+
+void SubmitStop(void) {
+	puts("X");
 	fflush(stdout);
 }
 
