@@ -65,10 +65,10 @@ namespace MouseSim
 
             Brush brush = Brushes.Tomato;
 
-            int x = maze.GoalX * cellLength;
-            int y = maze.GoalY * cellLength;
-            int width = maze.GoalW * cellLength;
-            int height = maze.GoalH * cellLength;
+            int x = maze.GoalX * cellLength + kBorderWidth;
+            int y = maze.GoalY * cellLength + kBorderWidth;
+            int width = maze.GoalW * cellLength - kBorderWidth;
+            int height = maze.GoalH * cellLength - kBorderWidth;
 
             g.FillRectangle(brush, x, y, width, height);
         }
@@ -77,7 +77,7 @@ namespace MouseSim
         {
             int x = sim.X;
             int y = sim.Y;
-            Direction dir = sim.Dir;
+            Direction dir = sim.DirF;
 
             int cellLength = (imageSize.Width - kBorderWidth) / maze.Size;
             Brush brush = Brushes.Green;

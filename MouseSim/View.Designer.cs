@@ -41,13 +41,15 @@
             this.textbox_command = new System.Windows.Forms.TextBox();
             this.btn_exec = new System.Windows.Forms.Button();
             this.btn_stop = new System.Windows.Forms.Button();
-            this.listbox_output = new System.Windows.Forms.ListBox();
-            this.listbox_input = new System.Windows.Forms.ListBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.textbox_maze_file = new System.Windows.Forms.TextBox();
             this.btn_select_maze = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.textbox_transmit = new System.Windows.Forms.TextBox();
+            this.textbox_recieve = new System.Windows.Forms.TextBox();
+            this.textbox_siminfo = new System.Windows.Forms.TextBox();
             this.menustrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picture_maze)).BeginInit();
             this.SuspendLayout();
@@ -93,10 +95,10 @@
             this.mouseSimのバージョン情報ToolStripMenuItem.Text = "MouseSim のバージョン情報(&A)";
             this.mouseSimのバージョン情報ToolStripMenuItem.Click += new System.EventHandler(this.menuitem_info_Clicked);
             // 
-            // picture_field
+            // picture_maze
             // 
             this.picture_maze.Location = new System.Drawing.Point(12, 27);
-            this.picture_maze.Name = "picture_field";
+            this.picture_maze.Name = "picture_maze";
             this.picture_maze.Size = new System.Drawing.Size(404, 404);
             this.picture_maze.TabIndex = 2;
             this.picture_maze.TabStop = false;
@@ -130,11 +132,11 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(433, 88);
+            this.label2.Location = new System.Drawing.Point(422, 88);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(64, 12);
+            this.label2.Size = new System.Drawing.Size(75, 12);
             this.label2.TabIndex = 6;
-            this.label2.Text = "実行コマンド";
+            this.label2.Text = "実行ファイル名";
             // 
             // textbox_command
             // 
@@ -155,6 +157,7 @@
             // 
             // btn_stop
             // 
+            this.btn_stop.Enabled = false;
             this.btn_stop.Location = new System.Drawing.Point(587, 110);
             this.btn_stop.Name = "btn_stop";
             this.btn_stop.Size = new System.Drawing.Size(150, 59);
@@ -163,28 +166,10 @@
             this.btn_stop.UseVisualStyleBackColor = true;
             this.btn_stop.Click += new System.EventHandler(this.btn_stop_Clicked);
             // 
-            // listbox_output
-            // 
-            this.listbox_output.FormattingEnabled = true;
-            this.listbox_output.ItemHeight = 12;
-            this.listbox_output.Location = new System.Drawing.Point(431, 211);
-            this.listbox_output.Name = "listbox_output";
-            this.listbox_output.Size = new System.Drawing.Size(150, 220);
-            this.listbox_output.TabIndex = 8;
-            // 
-            // listbox_input
-            // 
-            this.listbox_input.FormattingEnabled = true;
-            this.listbox_input.ItemHeight = 12;
-            this.listbox_input.Location = new System.Drawing.Point(587, 211);
-            this.listbox_input.Name = "listbox_input";
-            this.listbox_input.Size = new System.Drawing.Size(150, 220);
-            this.listbox_input.TabIndex = 9;
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(462, 196);
+            this.label3.Location = new System.Drawing.Point(462, 187);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(88, 12);
             this.label3.TabIndex = 12;
@@ -193,7 +178,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(618, 196);
+            this.label4.Location = new System.Drawing.Point(618, 187);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(88, 12);
             this.label4.TabIndex = 13;
@@ -225,18 +210,56 @@
             this.btn_select_maze.UseVisualStyleBackColor = true;
             this.btn_select_maze.Click += new System.EventHandler(this.btn_select_maze_Clicked);
             // 
-            // MouseSimView
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(452, 316);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(109, 12);
+            this.label6.TabIndex = 17;
+            this.label6.Text = "シミュレータからの情報";
+            // 
+            // textbox_transmit
+            // 
+            this.textbox_transmit.Location = new System.Drawing.Point(431, 202);
+            this.textbox_transmit.Multiline = true;
+            this.textbox_transmit.Name = "textbox_transmit";
+            this.textbox_transmit.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textbox_transmit.Size = new System.Drawing.Size(150, 100);
+            this.textbox_transmit.TabIndex = 18;
+            // 
+            // textbox_recieve
+            // 
+            this.textbox_recieve.Location = new System.Drawing.Point(588, 202);
+            this.textbox_recieve.Multiline = true;
+            this.textbox_recieve.Name = "textbox_recieve";
+            this.textbox_recieve.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textbox_recieve.Size = new System.Drawing.Size(149, 100);
+            this.textbox_recieve.TabIndex = 19;
+            // 
+            // textbox_siminfo
+            // 
+            this.textbox_siminfo.Location = new System.Drawing.Point(431, 331);
+            this.textbox_siminfo.Multiline = true;
+            this.textbox_siminfo.Name = "textbox_siminfo";
+            this.textbox_siminfo.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textbox_siminfo.Size = new System.Drawing.Size(150, 100);
+            this.textbox_siminfo.TabIndex = 20;
+            // 
+            // View
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(749, 443);
+            this.Controls.Add(this.textbox_siminfo);
+            this.Controls.Add(this.textbox_recieve);
+            this.Controls.Add(this.textbox_transmit);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.btn_select_maze);
             this.Controls.Add(this.textbox_maze_file);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.listbox_input);
-            this.Controls.Add(this.listbox_output);
             this.Controls.Add(this.btn_stop);
             this.Controls.Add(this.btn_exec);
             this.Controls.Add(this.textbox_command);
@@ -249,7 +272,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.menustrip;
             this.MaximizeBox = false;
-            this.Name = "MouseSimView";
+            this.Name = "View";
             this.Text = "MouseSim";
             this.menustrip.ResumeLayout(false);
             this.menustrip.PerformLayout();
@@ -274,13 +297,15 @@
         private System.Windows.Forms.TextBox textbox_command;
         private System.Windows.Forms.Button btn_exec;
         private System.Windows.Forms.Button btn_stop;
-        private System.Windows.Forms.ListBox listbox_output;
-        private System.Windows.Forms.ListBox listbox_input;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textbox_maze_file;
         private System.Windows.Forms.Button btn_select_maze;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox textbox_transmit;
+        private System.Windows.Forms.TextBox textbox_recieve;
+        private System.Windows.Forms.TextBox textbox_siminfo;
     }
 }
 

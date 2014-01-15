@@ -116,7 +116,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="sample.txt" />
+    <Content Include="maze.txt" />
+    <Content Include="maze_adachi.txt" />
+    <Content Include="maze_minimum.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

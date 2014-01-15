@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,7 +12,7 @@ namespace MouseSim
         private Maze maze;
         private Simulator sim;
 
-        private int kDelayMs = 200;
+        private static int kDelayMs = 200;
 
         public Controller(View view)
         {
@@ -42,18 +44,27 @@ namespace MouseSim
 
         public void LoadMaze()
         {
-            string maze_file = view.MazeFile;
-            maze = MazeReader.Load(maze_file);
+            try
+            {
+                maze = MazeReader.Load(view.MazeFile);
+            }
+            catch (IOException ex)
+            {
+                view.ShowMessage(ex.Message);
+                maze = null;
+            }
+
             sim = new Simulator(maze);
+
             view.DrawMaze(maze);
             view.DrawAgent(maze, sim);
         }
 
-        public async Task DebugGoForward(CancellationToken ct)
+        public async Task GoForward(int numBlocks, CancellationToken ct)
         {
             int fromX = sim.X;
             int fromY = sim.Y;
-            sim.GoForward();
+            sim.GoForward(numBlocks);
             int toX = sim.X;
             int toY = sim.Y;
 
@@ -73,7 +84,7 @@ namespace MouseSim
             await Task.Delay(kDelayMs, ct);
         }
 
-        public async Task DebugTurnLeft(CancellationToken ct)
+        public async Task TurnLeft(CancellationToken ct)
         {
             sim.TurnLeft();
             view.DrawMaze(maze);
@@ -82,7 +93,7 @@ namespace MouseSim
             await Task.Delay(kDelayMs, ct);
         }
 
-        public async Task DebugTurnRight(CancellationToken ct)
+        public async Task TurnRight(CancellationToken ct)
         {
             sim.TurnRight();
             view.DrawMaze(maze);
@@ -97,18 +108,130 @@ namespace MouseSim
 
             while (true)
             {
-                if (sim.HasWall((Direction)(((int)sim.Dir + 1) % 4)) == false)
+                if (sim.HasWall(sim.DirL) == false)
                 {
-                    await DebugTurnLeft(ct);
-                    await DebugGoForward(ct);
+                    await TurnLeft(ct);
+                    await GoForward(1, ct);
                 }
-                else if (sim.HasWall(sim.Dir) == false)
+                else if (sim.HasWall(sim.DirF) == false)
                 {
-                    await DebugGoForward(ct);
+                    await GoForward(1, ct);
                 }
                 else
                 {
-                    await DebugTurnRight(ct);
+                    await TurnRight(ct);
+                }
+
+                ct.ThrowIfCancellationRequested();
+            }
+        }
+
+        public bool TryParse(string msg, out char cmd, out IList<string> args)
+        {
+            char[] delimiter = { ' ' };
+            string[] seq = msg.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
+
+            args = new List<string>();
+            cmd = '\0';
+
+            if (seq.Length == 0)
+            {
+                return false;
+            }
+
+            if (seq[0].Length != 1)
+            {
+                return false;
+            }
+
+            // ここにエラー処理を入れる
+
+            cmd = seq[0].ToCharArray()[0];
+
+            for (int i = 1; i < seq.Length; i++)
+            {
+                args.Add(seq[i]);
+            }
+
+            return true;
+        }
+
+        public async Task Run(CancellationToken ct)
+        {
+            string fullpath = Path.Combine(view.WorkingDirectory, view.LaunchCommand);
+            if (File.Exists(fullpath) == false)
+            {
+                view.ShowMessage(fullpath + " が見つかりません。");
+                return;
+            }
+
+            sim.Reset();
+
+            using (var program = new AgentCommunicator(view.WorkingDirectory, fullpath))
+            {
+                program.Launch();
+
+                try
+                {
+                    string header = sim.Header();
+                    view.Add_listbox_transmit(header);
+                    program.Transmit(header);
+
+                    while (true)
+                    {
+                        string stdin = sim.WallInfo();
+                        program.Transmit(stdin);
+                        view.Add_listbox_transmit(stdin);
+
+                        string stdout = await program.RecieveAsync();
+
+                        if (stdout == null)
+                        {
+                            view.Add_listbox_siminfo("出力が読み取れませんでした");
+                            break;
+                        }
+
+                        view.Add_listbox_recieve(stdout);
+
+                        char cmd;
+                        IList<string> args;
+
+                        if (TryParse(stdout, out cmd, out args) == false)
+                        {
+                            view.Add_listbox_siminfo("出力が不正です　(" + stdout + ")");
+                            break;
+                        }
+
+                        bool end = false;
+
+                        switch (cmd)
+                        {
+                            case 'F':
+                                int numBlocks = int.Parse(args[0]);
+                                await GoForward(numBlocks, ct);
+                                break;
+                            case 'L':
+                                await TurnLeft(ct);
+                                break;
+                            case 'R':
+                                await TurnRight(ct);
+                                break;
+                            case 'G':
+                                view.Add_listbox_siminfo("ゴールしたと主張しています");
+                                end = true;
+                                break;
+                            default:
+                                break;
+                        }
+
+                        if (end) break;
+
+                        ct.ThrowIfCancellationRequested();
+                    }
+                }
+                finally
+                {
+                    program.Kill(); // DisposeしたときにKillしてくれるような気もしなくもない
                 }
             }
         }

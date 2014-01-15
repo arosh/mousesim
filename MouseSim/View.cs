@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Windows.Forms;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace MouseSim
 {
@@ -48,25 +48,60 @@ namespace MouseSim
             textbox_workdir.Text = workdir;
         }
 
+        public string WorkingDirectory
+        {
+            get
+            {
+                return textbox_workdir.Text;
+            }
+        }
+
+        public string LaunchCommand
+        {
+            get
+            {
+                return textbox_command.Text;
+            }
+        }
+
         private async void btn_exec_Clicked(object sender, EventArgs e)
         {
             if (ctrl.IsMazeReady == false)
             {
-                MessageBox.Show(this, "まだ迷路ファイルを読み込んでいません、");
+                ShowMessage("まだ迷路ファイルを読み込んでいません。");
+                return;
+            }
+
+            if (WorkingDirectory.Length == 0)
+            {
+                ShowMessage("作業ディレクトリが入力されていません。");
+                return;
+            }
+
+            if (LaunchCommand.Length == 0)
+            {
+                ShowMessage("実行コマンドが入力されていません");
                 return;
             }
 
             // http://msdn.microsoft.com/ja-jp/library/jj155759.aspx
             cts = new CancellationTokenSource();
 
+            btn_exec.Enabled = false;
+            btn_stop.Enabled = true;
+
             try
             {
-                await ctrl.DebugRun(cts.Token);
+                // await ctrl.DebugRun(cts.Token);
+                await ctrl.Run(cts.Token);
             }
             catch (OperationCanceledException)
             {
                 // do nothing
             }
+
+            btn_exec.Enabled = true;
+            btn_stop.Enabled = false;
 
             cts = null;
         }
@@ -75,7 +110,7 @@ namespace MouseSim
         {
             if (ctrl.IsMazeReady == false)
             {
-                MessageBox.Show(this, "まだ迷路ファイルを読み込んでいません、");
+                ShowMessage("まだ迷路ファイルを読み込んでいません。");
                 return;
             }
 
@@ -85,46 +120,19 @@ namespace MouseSim
             }
         }
 
-        private void Add_listbox_output(string msg)
-        {
-            listbox_output.Items.Add(msg);
-        }
-
-        private void Add_listbox_input(string msg)
-        {
-            listbox_input.Items.Add(msg);
-        }
-
-        private void Add_listbox_output(IEnumerable<string> msgs)
-        {
-            listbox_output.Items.AddRange(msgs.ToArray());
-        }
-
-        private void Add_listbox_input(IEnumerable<string> msgs)
-        {
-            listbox_input.Items.AddRange(msgs.ToArray());
-        }
-
-        private void Clear_listbox_output()
-        {
-            listbox_output.Items.Clear();
-        }
-
-        private void Clear_listbox_input()
-        {
-            listbox_input.Items.Clear();
-        }
 
         private void btn_select_maze_Clicked(object sender, EventArgs e)
         {
-            var dialog = new OpenFileDialog();
-            dialog.Filter = "迷路ファイル(*.txt)|*.txt|すべてのファイル(*.*)|*.*";
-
-            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            using (var dialog = new OpenFileDialog())
             {
-                string maze_file = dialog.FileName;
-                Update_textbox_maze_file(maze_file);
-                ctrl.LoadMaze();
+                dialog.Filter = "迷路ファイル(*.txt)|*.txt|すべてのファイル(*.*)|*.*";
+
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    string maze_file = dialog.FileName;
+                    Update_textbox_maze_file(maze_file);
+                    ctrl.LoadMaze();
+                }
             }
         }
 
@@ -195,6 +203,42 @@ namespace MouseSim
             });
 
             picture_maze.Invalidate();
+        }
+
+        public void ShowMessage(string msg)
+        {
+            MessageBox.Show(this, msg);
+        }
+
+
+        public void Add_listbox_transmit(string msg)
+        {
+            textbox_transmit.AppendText(msg + Environment.NewLine);
+        }
+
+        public void Add_listbox_recieve(string msg)
+        {
+            textbox_recieve.AppendText(msg + Environment.NewLine);
+        }
+
+        public void Add_listbox_siminfo(string msg)
+        {
+            textbox_siminfo.AppendText(msg + Environment.NewLine);
+        }
+
+        public void Clear_listbox_transmit()
+        {
+            textbox_transmit.Clear();
+        }
+
+        public void Clear_listbox_recieve()
+        {
+            textbox_recieve.Clear();
+        }
+
+        public void Clear_listbox_siminfo()
+        {
+            textbox_siminfo.Clear();
         }
     }
 }

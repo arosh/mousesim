@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace MouseSim
@@ -20,6 +19,8 @@ namespace MouseSim
          * 2: 上には壁がないが左にはある
          * 3: 上にも左にも壁がある
          * 
+         * 実際のルール( http://www.ntf.or.jp/mouse/micromouse2013/kitei_half_since2013.html )と比べるとかなり冗長だけど、
+         * まぁそれはそれで良いんじゃないでしょうか
          */
 
         public static Maze Load(string ifname)
