@@ -183,7 +183,19 @@ namespace MouseSim
                         program.Transmit(stdin);
                         view.Add_listbox_transmit(stdin);
 
-                        string stdout = await program.RecieveAsync();
+                        string stdout;
+                        while (true)
+                        {
+                            string recv = await program.RecieveAsync();
+
+                            if (recv.StartsWith("#") == false)
+                            {
+                                stdout = recv;
+                                break;
+                            }
+
+                            view.Add_listbox_agentinfo(recv);
+                        }
 
                         if (stdout == null)
                         {

@@ -31,25 +31,17 @@ namespace MouseSim
 
         public void GoForward(int distance = 1)
         {
-            int nx = X;
-            int ny = Y;
-
             for (int i = 0; i < distance; i++)
             {
                 // 壁にあたったら、そこで止まる
-                if (maze.HasWall(nx, ny, DirF))
+                // 外枠に壁がなかったら間違いなくバグる
+                if (maze.HasWall(X, Y, DirF))
                 {
                     break;
                 }
 
-                nx += dx[dir];
-                ny += dy[dir];
-            }
-
-            if (0 <= nx && nx < maze.Size && 0 <= ny && ny < maze.Size)
-            {
-                X = nx;
-                Y = ny;
+                X += dx[dir];
+                Y += dy[dir];
             }
         }
 

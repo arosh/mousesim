@@ -27,6 +27,7 @@ namespace MouseSim
      * R   -> 右に回転する
      * X   -> 終了する
      * S   -> リセット
+     * #   -> コメント
      */
     public class AgentCommunicator : IDisposable
     {

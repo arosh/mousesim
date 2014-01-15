@@ -50,6 +50,8 @@
             this.textbox_transmit = new System.Windows.Forms.TextBox();
             this.textbox_recieve = new System.Windows.Forms.TextBox();
             this.textbox_siminfo = new System.Windows.Forms.TextBox();
+            this.textbox_agentinfo = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.menustrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picture_maze)).BeginInit();
             this.SuspendLayout();
@@ -230,11 +232,11 @@
             // 
             // textbox_recieve
             // 
-            this.textbox_recieve.Location = new System.Drawing.Point(588, 202);
+            this.textbox_recieve.Location = new System.Drawing.Point(587, 202);
             this.textbox_recieve.Multiline = true;
             this.textbox_recieve.Name = "textbox_recieve";
             this.textbox_recieve.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textbox_recieve.Size = new System.Drawing.Size(149, 100);
+            this.textbox_recieve.Size = new System.Drawing.Size(150, 100);
             this.textbox_recieve.TabIndex = 19;
             // 
             // textbox_siminfo
@@ -246,11 +248,31 @@
             this.textbox_siminfo.Size = new System.Drawing.Size(150, 100);
             this.textbox_siminfo.TabIndex = 20;
             // 
+            // textbox_agentinfo
+            // 
+            this.textbox_agentinfo.Location = new System.Drawing.Point(587, 331);
+            this.textbox_agentinfo.Multiline = true;
+            this.textbox_agentinfo.Name = "textbox_agentinfo";
+            this.textbox_agentinfo.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textbox_agentinfo.Size = new System.Drawing.Size(150, 100);
+            this.textbox_agentinfo.TabIndex = 21;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(628, 316);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(68, 12);
+            this.label7.TabIndex = 22;
+            this.label7.Text = "AIからの情報";
+            // 
             // View
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(749, 443);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.textbox_agentinfo);
             this.Controls.Add(this.textbox_siminfo);
             this.Controls.Add(this.textbox_recieve);
             this.Controls.Add(this.textbox_transmit);
@@ -306,6 +328,8 @@
         private System.Windows.Forms.TextBox textbox_transmit;
         private System.Windows.Forms.TextBox textbox_recieve;
         private System.Windows.Forms.TextBox textbox_siminfo;
+        private System.Windows.Forms.TextBox textbox_agentinfo;
+        private System.Windows.Forms.Label label7;
     }
 }
 

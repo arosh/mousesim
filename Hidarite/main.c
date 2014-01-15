@@ -35,6 +35,9 @@ int main(int argc, const char *argv[]) {
 
 	int pos_x, pos_y, pos_dir;
 
+	puts("# Hello, MouseSim!");
+	fflush(stdout);
+
 	ReadHeader(
 		&size,
 		&start_x, &start_y, &start_dir,

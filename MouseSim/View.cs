@@ -224,6 +224,11 @@ namespace MouseSim
             textbox_siminfo.AppendText(msg + Environment.NewLine);
         }
 
+        public void Add_listbox_agentinfo(string msg)
+        {
+            textbox_agentinfo.AppendText(msg + Environment.NewLine);
+        }
+
         public void Clear_listbox_transmit()
         {
             textbox_transmit.Clear();
@@ -237,6 +242,11 @@ namespace MouseSim
         public void Clear_listbox_siminfo()
         {
             textbox_siminfo.Clear();
+        }
+
+        public void Clear_listbox_agentinfo()
+        {
+            textbox_agentinfo.Clear();
         }
     }
 }
