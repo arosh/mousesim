@@ -1,5 +1,5 @@
-﻿
-using System.Text;
+﻿using System.Text;
+
 namespace MouseSim
 {
     public class Simulator
@@ -29,7 +29,8 @@ namespace MouseSim
             this.dir = (int)maze.StartDir;
         }
 
-        public void GoForward(int distance = 1) {
+        public void GoForward(int distance = 1)
+        {
             int nx = X;
             int ny = Y;
 
@@ -67,7 +68,7 @@ namespace MouseSim
         {
             int front = maze.HasWall(X, Y, DirF) ? 1 : 0;
             int left = maze.HasWall(X, Y, DirL) ? 1 : 0;
-            int back = maze.HasWall(X, Y,DirB) ? 1 : 0;
+            int back = maze.HasWall(X, Y, DirB) ? 1 : 0;
             int right = maze.HasWall(X, Y, DirR) ? 1 : 0;
 
             return string.Format("{0} {1} {2} {3}", front, left, back, right);
