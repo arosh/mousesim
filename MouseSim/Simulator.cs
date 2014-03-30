@@ -6,7 +6,7 @@ namespace MouseSim
     {
         // Loggerがほしいよね
 
-        private Maze maze;
+        public Maze maze { get; private set; }
         public int X { get; private set; }
         public int Y { get; private set; }
         public int dir;

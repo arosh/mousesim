@@ -78,7 +78,7 @@ namespace MouseSim
 
             if (LaunchCommand.Length == 0)
             {
-                ShowMessage("実行コマンドが入力されていません");
+                ShowMessage("実行ファイル名が入力されていません。");
                 return;
             }
 
@@ -90,8 +90,8 @@ namespace MouseSim
 
             try
             {
-                // await ctrl.DebugRun(cts.Token);
-                await ctrl.Run(cts.Token);
+                await ctrl.DebugRun(cts.Token);
+                // await ctrl.Run(cts.Token);
             }
             catch (OperationCanceledException)
             {
@@ -142,7 +142,7 @@ namespace MouseSim
             }
         }
 
-        private void BeginDraw(Action<Graphics> f)
+        private void BeginDraw(Action<Graphics> fn)
         {
             if (picture_maze.Image == null)
             {
@@ -151,7 +151,7 @@ namespace MouseSim
 
             using (var g = Graphics.FromImage(picture_maze.Image))
             {
-                f(g);
+                fn(g);
             }
         }
 

@@ -106,20 +106,157 @@ namespace MouseSim
         {
             sim.Reset();
 
-            while (true)
+            int size = sim.maze.Size;
+
+            int[,] d = new int[size, size];
+            bool[,] vis = new bool[size, size];
+            bool[, ,] wall = new bool[size, size, 4];
+
+            // =========
+            // 壁の初期化
+            // =========
+            for (int i = 0; i < size; i++)
+                for (int j = 0; j < size; j++)
+                    for (int k = 0; k < 4; k++)
+                        wall[i, j, k] = false;
+
+            // 端に壁をたてる
+            for (int i = 0; i < size; i++)
             {
-                if (sim.HasWall(sim.DirL) == false)
+                // 左
+                wall[i, 0, 1] = true;
+                // 右
+                wall[i, size - 1, 3] = true;
+                // 上
+                wall[0, i, 0] = true;
+                // 下
+                wall[size - 1, i, 2] = true;
+            }
+
+            int curY = sim.maze.StartY;
+            int curX = sim.maze.StartX;
+
+            int dir = (int)sim.maze.StartDir;
+
+            int[] dy = new int[] { -1, 0, 1, 0 };
+            int[] dx = new int[] { 0, -1, 0, 1 };
+
+            Func<int, int, bool> check_coor = (y, x) => (0 <= y && y < size && 0 <= x && x < size);
+
+            while (!(sim.maze.GoalX <= curX && curX < sim.maze.GoalX + sim.maze.GoalW && sim.maze.GoalY <= curY && curY < sim.maze.GoalY + sim.maze.GoalH))
+            {
+                // ===========
+                // 壁情報の入力
+                // ===========
+                // 前方に壁があるか？
+                wall[curY, curX, (dir + 0) % 4] = sim.HasWall(sim.DirF);
+                // もしも向こう側がマップ内ならば
+                if (check_coor(curY + dy[(dir + 0) % 4], curX + dx[(dir + 0) % 4]))
+                {
+                    wall[curY + dy[(dir + 0) % 4], curX + dx[(dir + 0) % 4], (dir + 0 + 2) % 4] = wall[curY, curX, (dir + 0) % 4];
+                }
+
+                wall[curY, curX, (dir + 1) % 4] = sim.HasWall(sim.DirL);
+                if (check_coor(curY + dy[(dir + 1) % 4], curX + dx[(dir + 1) % 4]))
+                {
+                    wall[curY + dy[(dir + 1) % 4], curX + dx[(dir + 1) % 4], (dir + 1 + 2) % 4] = wall[curY, curX, (dir + 1) % 4];
+                }
+
+                wall[curY, curX, (dir + 2) % 4] = sim.HasWall(sim.DirB);
+                if (check_coor(curY + dy[(dir + 2) % 4], curX + dx[(dir + 2) % 4]))
+                {
+                    wall[curY + dy[(dir + 2) % 4], curX + dx[(dir + 2) % 4], (dir + 2 + 2) % 4] = wall[curY, curX, (dir + 2) % 4];
+                }
+
+                wall[curY, curX, (dir + 3) % 4] = sim.HasWall(sim.DirR);
+                if (check_coor(curY + dy[(dir + 3) % 4], curX + dx[(dir + 3) % 4]))
+                {
+                    wall[curY + dy[(dir + 3) % 4], curX + dx[(dir + 3) % 4], (dir + 3 + 2) % 4] = wall[curY, curX, (dir + 3) % 4];
+                }
+
+                // ============================
+                // ゴール位置からダイクストラ開始
+                // ============================
+
+                // すべての座標を未踏と設定し、距離を無限大に設定
+                for (int i = 0; i < size; i++)
+                {
+                    for (int j = 0; j < size; j++)
+                    {
+                        d[i, j] = int.MaxValue;
+                        vis[i, j] = false;
+                    }
+                }
+
+                // ダイクストラのスタート地点の距離は0
+                for (int i = 0; i < sim.maze.GoalW; i++)
+                {
+                    for (int j = 0; j < sim.maze.GoalH; j++)
+                    {
+                        d[sim.maze.GoalY + j, sim.maze.GoalX + i] = 0;
+                    }
+                }
+
+                while (true)
+                {
+                    // 未踏の地の中で距離が最小の地点を探す
+                    int vx = -1, vy = -1;
+
+                    for (int i = 0; i < size; i++)
+                    {
+                        for (int j = 0; j < size; j++)
+                        {
+                            if (vis[i, j] == false && ((vx == -1 && vy == -1) || d[i, j] < d[vy, vx]))
+                            {
+                                vy = i;
+                                vx = j;
+                            }
+                        }
+                    }
+
+                    // 未踏の地が無かったら、探索終了
+                    if (vx == -1 && vy == -1) break;
+
+                    vis[vy, vx] = true;
+
+                    for (int k = 0; k < 4; k++)
+                    {
+                        if (wall[vy, vx, k] == false)
+                        {
+                            int ny = vy + dy[k];
+                            int nx = vx + dx[k];
+                            d[ny, nx] = Math.Min(d[ny, nx], d[vy, vx] + 1);
+                        }
+                    }
+                }
+                // ============================
+                // ゴール位置からダイクストラ終了
+                // ============================
+
+                // TODO 経路を調べて、既にマッピング済みのマスだけを移動してゴールまで行けるようならば、探索を終了する
+                // マッピング済みの領域かどうかを保存する変数が必要
+
+                // どちらに移動するか決めて、そっちに移動する
+                if (wall[curY, curX, (dir + 0) % 4] == false && d[curY + dy[(dir + 0) % 4], curX + dx[(dir + 0) % 4]] == d[curY, curX] - 1)
+                {
+                    await GoForward(1, ct);
+                    curY += dy[dir];
+                    curX += dx[dir];
+                }
+                else if (wall[curY, curX, (dir + 1) % 4] == false && d[curY + dy[(dir + 1) % 4], curX + dx[(dir + 1) % 4]] == d[curY, curX] - 1)
                 {
                     await TurnLeft(ct);
-                    await GoForward(1, ct);
+                    dir = (dir + 1) % 4;
                 }
-                else if (sim.HasWall(sim.DirF) == false)
+                else if (wall[curY, curX, (dir + 3) % 4] == false && d[curY + dy[(dir + 3) % 4], curX + dx[(dir + 3) % 4]] == d[curY, curX] - 1)
                 {
-                    await GoForward(1, ct);
+                    await TurnRight(ct);
+                    dir = (dir + 3) % 4;
                 }
                 else
                 {
                     await TurnRight(ct);
+                    dir = (dir + 3) % 4;
                 }
 
                 ct.ThrowIfCancellationRequested();
