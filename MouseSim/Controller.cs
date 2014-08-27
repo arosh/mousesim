@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MouseSim
 {
-    class Controller
+    public class Controller
     {
         private View view;
         private Maze maze;

@@ -8,7 +8,7 @@ namespace MouseSim
 {
     public enum EAgentActionType
     {
-        GO_FORWARD, TURN_LEFT, TURN_RIGHT
+        GO_FORWARD, TURN_LEFT, TURN_RIGHT, NO_OPERATION
     }
 
     public class AgentAction
@@ -135,7 +135,10 @@ namespace MouseSim
                 }
 
                 // 未踏の地が無かったら、探索終了
-                if (vx == -1 && vy == -1) break;
+                if (vx == -1 && vy == -1)
+                {
+                    break;
+                }
 
                 vis[vy, vx] = true;
 
@@ -157,6 +160,7 @@ namespace MouseSim
                 // GoForward
                 curY += dy[dir];
                 curX += dx[dir];
+                visible[curY, curX] = true;
                 return new AgentAction(EAgentActionType.GO_FORWARD, 1);
             }
             else if (wall[curY, curX, (dir + 1) % 4] == false && d[curY + dy[(dir + 1) % 4], curX + dx[(dir + 1) % 4]] == d[curY, curX] - 1)
@@ -171,12 +175,17 @@ namespace MouseSim
                 dir = (dir + 3) % 4;
                 return new AgentAction(EAgentActionType.TURN_RIGHT, 0);
             }
-            else
+            else if (wall[curY, curX, (dir + 2) % 2] == false && d[curY + dy[(dir + 2) % 4], curX + dx[(dir + 2) % 4]] == d[curY, curX] - 1)
             {
                 // TurnLeft
                 // 後ろを向くのが最適解の場合は、とりあえず左を向いておいて、次のステップに任せる
                 dir = (dir + 1) % 4;
                 return new AgentAction(EAgentActionType.TURN_LEFT, 0);
+            }
+            else
+            {
+                // どの向きを向いても未開の地に辿りつけない場合 -> 連結でないマスが存在する場合
+                return new AgentAction(EAgentActionType.NO_OPERATION, 0);
             }
         }
 
