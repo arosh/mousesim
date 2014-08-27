@@ -45,7 +45,7 @@ namespace MouseSim
             int offset = kBorderWidth / 2;
             int cellLength = (imageSize.Width - kBorderWidth) / maze.Size;
 
-            var color = Color.OrangeRed;
+            Color color = Color.OrangeRed;
             float width = 5;
 
             using (var pen = new Pen(color, width))
@@ -124,6 +124,22 @@ namespace MouseSim
             }
 
             g.FillPolygon(brush, points);
+        }
+
+        public static void DrawVisibility(Graphics g, Size imageSize, Maze maze, bool[,] visible)
+        {
+            int cellLength = (imageSize.Width - kBorderWidth) / maze.Size;
+            Brush unknownColor = Brushes.LightGray;
+            for (int y = 0; y < maze.Size; y++)
+            {
+                for (int x = 0; x < maze.Size; x++)
+                {
+                    if (visible[y, x] == false)
+                    {
+                        g.FillRectangle(unknownColor, x * cellLength, y * cellLength, cellLength, cellLength);
+                    }
+                }
+            }
         }
     }
 }

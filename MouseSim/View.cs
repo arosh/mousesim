@@ -155,13 +155,16 @@ namespace MouseSim
             }
         }
 
-        private void PictureBox_Maze_Clear()
+        public void PictureBox_Maze_Clear()
         {
             BeginDraw(g =>
             {
                 g.Clear(Color.White);
             });
+        }
 
+        public void PictureBox_Maze_Invalidate()
+        {
             PictureBox_Maze.Invalidate();
         }
 
@@ -176,21 +179,15 @@ namespace MouseSim
             {
                 Graphicer.DrawArrow(g, PictureBox_Maze.Size, ctrl.Maze, from_x, from_y, to_x, to_y);
             });
-
-            PictureBox_Maze.Invalidate();
         }
 
         public void DrawMaze(Maze maze)
         {
-            PictureBox_Maze_Clear();
-
             BeginDraw(g =>
             {
                 Graphicer.DrawGoal(g, PictureBox_Maze.Size, maze);
                 Graphicer.DrawMaze(g, PictureBox_Maze.Size, maze);
             });
-
-            PictureBox_Maze.Invalidate();
         }
 
         public void DrawAgent(Maze maze, Simulator sim)
@@ -199,8 +196,14 @@ namespace MouseSim
             {
                 Graphicer.DrawAgent(g, PictureBox_Maze.Size, maze, sim);
             });
+        }
 
-            PictureBox_Maze.Invalidate();
+        public void DrawVisibility(Maze maze, bool[,] visible)
+        {
+            BeginDraw(g =>
+            {
+                Graphicer.DrawVisibility(g, PictureBox_Maze.Size, maze, visible);
+            });
         }
 
         public void ShowMessage(string msg)

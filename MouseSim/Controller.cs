@@ -12,6 +12,8 @@ namespace MouseSim
         private Maze maze;
         private Simulator sim;
 
+        private bool[,] visible;
+
         private static int kDelayMs = 200;
 
         public Controller(View view)
@@ -55,9 +57,25 @@ namespace MouseSim
             }
 
             sim = new Simulator(maze);
+            int size = maze.Size;
 
+            visible = new bool[size, size];
+
+            for (int y = 0; y < size; y++)
+            {
+                for (int x = 0; x < size; x++)
+                {
+                    visible[y, x] = false;
+                }
+            }
+
+            visible[maze.StartY, maze.StartX] = true;
+
+            view.PictureBox_Maze_Clear();
+            view.DrawVisibility(maze, visible);
             view.DrawMaze(maze);
             view.DrawAgent(maze, sim);
+            view.PictureBox_Maze_Invalidate();
         }
 
         public async Task GoForward(int numBlocks, CancellationToken ct)
@@ -73,13 +91,35 @@ namespace MouseSim
                 return;
             }
 
+            view.PictureBox_Maze_Clear();
+            view.DrawVisibility(maze, visible);
             view.DrawMaze(maze);
             view.DrawArrow(fromX, fromY, toX, toY);
+            view.PictureBox_Maze_Invalidate();
 
             await Task.Delay(kDelayMs, ct);
 
+            // なんか同じ処理を書いているようでつらい
+            if (fromX == toX)
+            {
+                for (int y = Math.Min(fromY, toY); y <= Math.Max(fromY, toY); y++)
+                {
+                    visible[y, fromX] = true;
+                }
+            }
+            else
+            {
+                for (int x = Math.Min(fromX, toX); x <= Math.Max(fromX, toX); x++)
+                {
+                    visible[fromY, x] = true;
+                }
+            }
+
+            view.PictureBox_Maze_Clear();
+            view.DrawVisibility(maze, visible);
             view.DrawMaze(maze);
             view.DrawAgent(maze, sim);
+            view.PictureBox_Maze_Invalidate();
 
             await Task.Delay(kDelayMs, ct);
         }
@@ -87,8 +127,12 @@ namespace MouseSim
         public async Task TurnLeft(CancellationToken ct)
         {
             sim.TurnLeft();
+
+            view.PictureBox_Maze_Clear();
+            view.DrawVisibility(maze, visible);
             view.DrawMaze(maze);
             view.DrawAgent(maze, sim);
+            view.PictureBox_Maze_Invalidate();
 
             await Task.Delay(kDelayMs, ct);
         }
@@ -96,8 +140,12 @@ namespace MouseSim
         public async Task TurnRight(CancellationToken ct)
         {
             sim.TurnRight();
+
+            view.PictureBox_Maze_Clear();
+            view.DrawVisibility(maze, visible);
             view.DrawMaze(maze);
             view.DrawAgent(maze, sim);
+            view.PictureBox_Maze_Invalidate();
 
             await Task.Delay(kDelayMs, ct);
         }
@@ -111,7 +159,6 @@ namespace MouseSim
             int[,] d = new int[size, size];
             bool[,] vis = new bool[size, size];
             bool[, ,] wall = new bool[size, size, 4];
-            bool[,] open = new bool[size, size]; // 一度でも行ったことがあるか？
 
             // =========
             // 壁の初期化
@@ -146,11 +193,13 @@ namespace MouseSim
             int[] dy = new int[] { -1, 0, 1, 0 };
             int[] dx = new int[] { 0, -1, 0, 1 };
 
-            Func<int, int, bool> check_coor = (y, x) => (0 <= y && y < size && 0 <= x && x < size);
+            Func<int, int, bool> check_pos = (y, x) => (0 <= y && y < size && 0 <= x && x < size);
 
             // 探索を打ち切っても良い十分条件
             // 「現在地からゴールまでの仮想最短経路上のマスがすべて到達済み（壁の状態が調査済み）であり（←「通ろうとしている道に壁がないことが明らか」でも良いが、実装が難しい）
             // 現在の座標が「ゴールからスタートまでの最短経路上」に存在すること
+
+            //ダイクストラよりもSPFAのほうが向いているかも？
 
             for (int T = 0; T < 3; T++)
             {
@@ -163,7 +212,7 @@ namespace MouseSim
                     for (int k = 0; k < 4; k++)
                     {
                         wall[curY, curX, (dir + k) % 4] = sim.HasWall(ds[k]);
-                        if (check_coor(curY + dy[(dir + k) % 4], curX + dx[(dir + k) % 4]))
+                        if (check_pos(curY + dy[(dir + k) % 4], curX + dx[(dir + k) % 4]))
                         {
                             wall[curY + dy[(dir + k) % 4], curX + dx[(dir + k) % 4], (dir + k + 2) % 4] = wall[curY, curX, (dir + k) % 4];
                         }
@@ -267,7 +316,7 @@ namespace MouseSim
                     for (int k = 0; k < 4; k++)
                     {
                         wall[curY, curX, (dir + k) % 4] = sim.HasWall(ds[k]);
-                        if (check_coor(curY + dy[(dir + k) % 4], curX + dx[(dir + k) % 4]))
+                        if (check_pos(curY + dy[(dir + k) % 4], curX + dx[(dir + k) % 4]))
                         {
                             wall[curY + dy[(dir + k) % 4], curX + dx[(dir + k) % 4], (dir + k + 2) % 4] = wall[curY, curX, (dir + k) % 4];
                         }

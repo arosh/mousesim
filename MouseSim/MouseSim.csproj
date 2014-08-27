@@ -53,6 +53,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Agent.cs" />
     <Compile Include="AgentCommunicator.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="Graphicer.cs" />
