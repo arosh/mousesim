@@ -17,40 +17,40 @@ namespace MouseSim
             cts = null;
         }
 
-        private void menuitem_close_Clicked(object sender, EventArgs e)
+        private void MenuItem_Close_Clicked(object sender, EventArgs e)
         {
             this.Close();
         }
 
-        private void menuitem_info_Clicked(object sender, EventArgs e)
+        private void MenuItem_Info_Clicked(object sender, EventArgs e)
         {
             string version = "0.0.1";
             string text = string.Format("MouseSim\nVersion {0}", version);
             MessageBox.Show(this, text, "MouseSim のバージョン情報");
         }
 
-        private void btn_launch_fbd_Clicked(object sender, EventArgs e)
+        private void Button_FolderSelect_Clicked(object sender, EventArgs e)
         {
             using (var dialog = new FolderBrowserDialog())
             {
                 if (dialog.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
                 {
                     string workdir = dialog.SelectedPath;
-                    Update_textbox_workdir(workdir);
+                    TextBox_WorkDir_Update(workdir);
                 }
             }
         }
 
-        private void Update_textbox_workdir(string workdir)
+        private void TextBox_WorkDir_Update(string workdir)
         {
-            textbox_workdir.Text = workdir;
+            TextBox_WorkDir.Text = workdir;
         }
 
         public string WorkingDirectory
         {
             get
             {
-                return textbox_workdir.Text;
+                return TextBox_WorkDir.Text;
             }
         }
 
@@ -58,11 +58,11 @@ namespace MouseSim
         {
             get
             {
-                return textbox_command.Text;
+                return TextBox_Command.Text;
             }
         }
 
-        private async void btn_exec_Clicked(object sender, EventArgs e)
+        private async void Button_Exec_Clicked(object sender, EventArgs e)
         {
             if (ctrl.IsMazeReady == false)
             {
@@ -85,8 +85,8 @@ namespace MouseSim
             // http://msdn.microsoft.com/ja-jp/library/jj155759.aspx
             cts = new CancellationTokenSource();
 
-            btn_exec.Enabled = false;
-            btn_stop.Enabled = true;
+            Button_Exec.Enabled = false;
+            Button_Stop.Enabled = true;
 
             try
             {
@@ -98,13 +98,13 @@ namespace MouseSim
                 // do nothing
             }
 
-            btn_exec.Enabled = true;
-            btn_stop.Enabled = false;
+            Button_Exec.Enabled = true;
+            Button_Stop.Enabled = false;
 
             cts = null;
         }
 
-        private void btn_stop_Clicked(object sender, EventArgs e)
+        private void Button_Stop_Clicked(object sender, EventArgs e)
         {
             if (ctrl.IsMazeReady == false)
             {
@@ -119,7 +119,7 @@ namespace MouseSim
         }
 
 
-        private void btn_select_maze_Clicked(object sender, EventArgs e)
+        private void Button_SelectMaze_Clicked(object sender, EventArgs e)
         {
             using (var dialog = new OpenFileDialog())
             {
@@ -128,7 +128,7 @@ namespace MouseSim
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     string maze_file = dialog.FileName;
-                    Update_textbox_maze_file(maze_file);
+                    TextBox_MazeFile_Update(maze_file);
                     ctrl.LoadMaze();
                 }
             }
@@ -138,69 +138,69 @@ namespace MouseSim
         {
             get
             {
-                return textbox_maze_file.Text;
+                return TextBox_MazeFile.Text;
             }
         }
 
         private void BeginDraw(Action<Graphics> fn)
         {
-            if (picture_maze.Image == null)
+            if (PictureBox_Maze.Image == null)
             {
-                picture_maze.Image = new Bitmap(picture_maze.Width, picture_maze.Height);
+                PictureBox_Maze.Image = new Bitmap(PictureBox_Maze.Width, PictureBox_Maze.Height);
             }
 
-            using (var g = Graphics.FromImage(picture_maze.Image))
+            using (var g = Graphics.FromImage(PictureBox_Maze.Image))
             {
                 fn(g);
             }
         }
 
-        private void Clear_picture_maze()
+        private void PictureBox_Maze_Clear()
         {
             BeginDraw(g =>
             {
                 g.Clear(Color.White);
             });
 
-            picture_maze.Invalidate();
+            PictureBox_Maze.Invalidate();
         }
 
-        private void Update_textbox_maze_file(string fname)
+        private void TextBox_MazeFile_Update(string fname)
         {
-            textbox_maze_file.Text = fname;
+            TextBox_MazeFile.Text = fname;
         }
 
         public void DrawArrow(int from_x, int from_y, int to_x, int to_y)
         {
             BeginDraw(g =>
             {
-                Graphicer.DrawArrow(g, picture_maze.Size, ctrl.Maze, from_x, from_y, to_x, to_y);
+                Graphicer.DrawArrow(g, PictureBox_Maze.Size, ctrl.Maze, from_x, from_y, to_x, to_y);
             });
 
-            picture_maze.Invalidate();
+            PictureBox_Maze.Invalidate();
         }
 
         public void DrawMaze(Maze maze)
         {
-            Clear_picture_maze();
+            PictureBox_Maze_Clear();
 
             BeginDraw(g =>
             {
-                Graphicer.DrawGoal(g, picture_maze.Size, maze);
-                Graphicer.DrawMaze(g, picture_maze.Size, maze);
+                Graphicer.DrawGoal(g, PictureBox_Maze.Size, maze);
+                Graphicer.DrawMaze(g, PictureBox_Maze.Size, maze);
             });
 
-            picture_maze.Invalidate();
+            PictureBox_Maze.Invalidate();
         }
 
         public void DrawAgent(Maze maze, Simulator sim)
         {
             BeginDraw(g =>
             {
-                Graphicer.DrawAgent(g, picture_maze.Size, maze, sim);
+                Graphicer.DrawAgent(g, PictureBox_Maze.Size, maze, sim);
             });
 
-            picture_maze.Invalidate();
+            PictureBox_Maze.Invalidate();
         }
 
         public void ShowMessage(string msg)
@@ -208,45 +208,44 @@ namespace MouseSim
             MessageBox.Show(this, msg);
         }
 
-
-        public void Add_listbox_transmit(string msg)
+        public void TextBox_Transmit_AppendLine(string msg)
         {
-            textbox_transmit.AppendText(msg + Environment.NewLine);
+            TextBox_Transmit.AppendText(msg + Environment.NewLine);
         }
 
-        public void Add_listbox_recieve(string msg)
+        public void TextBox_Recieve_AppendLine(string msg)
         {
-            textbox_recieve.AppendText(msg + Environment.NewLine);
+            TextBox_Recieve.AppendText(msg + Environment.NewLine);
         }
 
-        public void Add_listbox_siminfo(string msg)
+        public void TextBox_SimInfo_AppendLine(string msg)
         {
-            textbox_siminfo.AppendText(msg + Environment.NewLine);
+            TextBox_SimInfo.AppendText(msg + Environment.NewLine);
         }
 
-        public void Add_listbox_agentinfo(string msg)
+        public void TextBox_AgentInfo_AppendLine(string msg)
         {
-            textbox_agentinfo.AppendText(msg + Environment.NewLine);
+            TextBox_AgentInfo.AppendText(msg + Environment.NewLine);
         }
 
-        public void Clear_listbox_transmit()
+        public void TextBox_Transmit_Clear()
         {
-            textbox_transmit.Clear();
+            TextBox_Transmit.Clear();
         }
 
-        public void Clear_listbox_recieve()
+        public void TextBox_Recieve_Clear()
         {
-            textbox_recieve.Clear();
+            TextBox_Recieve.Clear();
         }
 
-        public void Clear_listbox_siminfo()
+        public void Textbox_SimInfo_Clear()
         {
-            textbox_siminfo.Clear();
+            TextBox_SimInfo.Clear();
         }
 
-        public void Clear_listbox_agentinfo()
+        public void TextBox_AgentInfo_Clear()
         {
-            textbox_agentinfo.Clear();
+            TextBox_AgentInfo.Clear();
         }
     }
 }

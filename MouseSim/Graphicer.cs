@@ -45,7 +45,10 @@ namespace MouseSim
             int offset = kBorderWidth / 2;
             int cellLength = (imageSize.Width - kBorderWidth) / maze.Size;
 
-            using (var pen = new Pen(Color.OrangeRed, 5))
+            var color = Color.OrangeRed;
+            float width = 5;
+
+            using (var pen = new Pen(color, width))
             {
                 using (pen.CustomEndCap = new AdjustableArrowCap(/* width = */ 3, /* height = */ 3))
                 {
@@ -117,7 +120,7 @@ namespace MouseSim
             }
             else
             {
-                points = null;
+                throw new System.NotImplementedException("dirがTopでもLeftでもBottomでもRightでもありません。");
             }
 
             g.FillPolygon(brush, points);
