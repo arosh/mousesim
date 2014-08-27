@@ -195,6 +195,7 @@ namespace MouseSim
             // * 「入り口の数」とか「入口の接しているマス」といった概念を使えば、ポケット状の場所の探索を削減できるのでは？
             //   「同じ向きに連続」かつ「入口が1個」とか
             // * いずれにしても「壁を探索済みか？」を保存するメモリは必要
+            // * ある程度の時間が過ぎたら、知っているマスだけを使って移動するなど
             visible[curY, curX] = true;
             var dirs = new Direction[] { sim.DirF, sim.DirL, sim.DirB, sim.DirR };
             for (int k = 0; k < 4; k++)

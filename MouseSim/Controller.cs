@@ -15,7 +15,7 @@ namespace MouseSim
 
         private bool[,] visible;
 
-        private static int kDelayMs = 20;
+        private static int kDelayMs = 300;
 
         public Controller(View view)
         {
@@ -96,7 +96,8 @@ namespace MouseSim
             {
                 return;
             }
-
+            
+            /*
             view.PictureBox_Maze_Clear();
             view.DrawVisibility(maze, visible);
             view.DrawMaze(maze);
@@ -104,6 +105,7 @@ namespace MouseSim
             view.PictureBox_Maze_Invalidate();
 
             await Task.Delay(kDelayMs, ct);
+            */
 
             // なんか同じ処理を書いているようでつらい
             if (fromX == toX)
