@@ -92,7 +92,6 @@ namespace MouseSim
                     visible[y, x] = false;
                 }
             }
-            visible[curY, curX] = true;
         }
 
         public AgentAction Explore()
@@ -117,6 +116,7 @@ namespace MouseSim
                 }
             }
 
+            //ダイクストラよりもSPFAのほうが向いているかも？
             // O(V^2)のダイクストラ開始
             while (true)
             {
@@ -135,7 +135,7 @@ namespace MouseSim
                 }
 
                 // 未踏の地が無かったら、探索終了
-                if (vx == -1 && vy == -1)
+                if ((vx == -1 && vy == -1) || d[vy, vx] == int.MaxValue)
                 {
                     break;
                 }
@@ -160,7 +160,6 @@ namespace MouseSim
                 // GoForward
                 curY += dy[dir];
                 curX += dx[dir];
-                visible[curY, curX] = true;
                 return new AgentAction(EAgentActionType.GO_FORWARD, 1);
             }
             else if (wall[curY, curX, (dir + 1) % 4] == false && d[curY + dy[(dir + 1) % 4], curX + dx[(dir + 1) % 4]] == d[curY, curX] - 1)
@@ -175,7 +174,7 @@ namespace MouseSim
                 dir = (dir + 3) % 4;
                 return new AgentAction(EAgentActionType.TURN_RIGHT, 0);
             }
-            else if (wall[curY, curX, (dir + 2) % 2] == false && d[curY + dy[(dir + 2) % 4], curX + dx[(dir + 2) % 4]] == d[curY, curX] - 1)
+            else if (wall[curY, curX, (dir + 2) % 4] == false && d[curY + dy[(dir + 2) % 4], curX + dx[(dir + 2) % 4]] == d[curY, curX] - 1)
             {
                 // TurnLeft
                 // 後ろを向くのが最適解の場合は、とりあえず左を向いておいて、次のステップに任せる
@@ -191,6 +190,12 @@ namespace MouseSim
 
         public void LearnWallInfo()
         {
+            // * そのマスの周り4マスがすべてvisibleだったらそのマスもvisibleだから探索しなくてよい、
+            //   みたいな処理を入れたら探索走行が高速になるのでは
+            // * 「入り口の数」とか「入口の接しているマス」といった概念を使えば、ポケット状の場所の探索を削減できるのでは？
+            //   「同じ向きに連続」かつ「入口が1個」とか
+            // * いずれにしても「壁を探索済みか？」を保存するメモリは必要
+            visible[curY, curX] = true;
             var dirs = new Direction[] { sim.DirF, sim.DirL, sim.DirB, sim.DirR };
             for (int k = 0; k < 4; k++)
             {
