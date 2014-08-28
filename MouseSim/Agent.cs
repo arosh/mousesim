@@ -200,10 +200,35 @@ namespace MouseSim
             var dirs = new Direction[] { sim.DirF, sim.DirL, sim.DirB, sim.DirR };
             for (int k = 0; k < 4; k++)
             {
-                wall[curY, curX, (dir + k) % 4] = sim.HasWall(dirs[k]);
-                if (CheckPos(curY + dy[(dir + k) % 4], curX + dx[(dir + k) % 4]))
+                int ndir = (dir + k) % 4;
+                wall[curY, curX, ndir] = sim.HasWall(dirs[k]);
+                int ny = curY + dy[ndir];
+                int nx = curX + dx[ndir];
+                if (CheckPos(ny, nx))
                 {
-                    wall[curY + dy[(dir + k) % 4], curX + dx[(dir + k) % 4], (dir + k + 2) % 4] = wall[curY, curX, (dir + k) % 4];
+                    wall[ny, nx, (ndir + 2) % 4] = wall[curY, curX, ndir];
+
+                    // とりあえず、1マス限定で枝刈り処理を入れてみる
+
+                    // 周囲の4マスから既に情報が得られているマスには入らない処理
+                    // (3辺が壁に囲まれているマスの探索も枝刈りできる)
+                    if (visible[ny, nx] == false)
+                    {
+                        int n = 0;
+                        for (int l = 0; l < 4; l++)
+                        {
+                            int my = ny + dy[l];
+                            int mx = nx + dx[l];
+                            if (CheckPos(my, mx) == false || visible[my, mx])
+                            {
+                                n++;
+                            }
+                        }
+                        if (n == 4)
+                        {
+                            visible[ny, nx] = true;
+                        }
+                    }
                 }
             }
         }
