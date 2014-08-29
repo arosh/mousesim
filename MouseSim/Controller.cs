@@ -15,7 +15,8 @@ namespace MouseSim
 
         private bool[,] visible;
 
-        private static int kDelayMs = 300;
+        // 本走行だけゆっくり見たいので、const解除
+        private static int kDelayMs = 30;
 
         public Controller(View view)
         {
@@ -96,8 +97,7 @@ namespace MouseSim
             {
                 return;
             }
-            
-            /*
+
             view.PictureBox_Maze_Clear();
             view.DrawVisibility(maze, visible);
             view.DrawMaze(maze);
@@ -105,7 +105,6 @@ namespace MouseSim
             view.PictureBox_Maze_Invalidate();
 
             await Task.Delay(kDelayMs, ct);
-            */
 
             // なんか同じ処理を書いているようでつらい
             if (fromX == toX)
@@ -160,16 +159,24 @@ namespace MouseSim
 
         public async Task DebugRun(CancellationToken ct)
         {
+            InitVisible();
+
+            sim.Reset();
+            var agent = new Agent(sim.maze.Size, this, sim);
+
             var sw = new Stopwatch();
             sw.Start();
-            sim.Reset();
-            InitVisible();
-            var agent = new Agent(sim.maze.Size, this, sim);
+
+            kDelayMs = 30;
+
             while (true)
             {
                 agent.LearnWallInfo();
-                var response = agent.Explore();
+                var response = agent.Adachi();
                 view.TextBox_AgentInfo_AppendLine(response.Type.ToString());
+
+                bool fBreak = false;
+
                 switch (response.Type)
                 {
                     case EAgentActionType.GO_FORWARD:
@@ -185,13 +192,129 @@ namespace MouseSim
                         break;
 
                     case EAgentActionType.NO_OPERATION:
-                        sw.Stop();
-                        view.TextBox_AgentInfo_AppendLine(sw.Elapsed.ToString());
-                        return;
+                        fBreak = true;
+                        break;
+                }
+
+                if (fBreak)
+                {
+                    break;
                 }
 
                 ct.ThrowIfCancellationRequested();
             }
+
+            while (true)
+            {
+                agent.LearnWallInfo();
+                var response = agent.Explore();
+                view.TextBox_AgentInfo_AppendLine(response.Type.ToString());
+
+                bool fBreak = false;
+
+                switch (response.Type)
+                {
+                    case EAgentActionType.GO_FORWARD:
+                        await GoForward(response.Value, ct);
+                        break;
+
+                    case EAgentActionType.TURN_LEFT:
+                        await TurnLeft(ct);
+                        break;
+
+                    case EAgentActionType.TURN_RIGHT:
+                        await TurnRight(ct);
+                        break;
+
+                    case EAgentActionType.NO_OPERATION:
+                        fBreak = true;
+                        break;
+                }
+
+                if (fBreak)
+                {
+                    break;
+                }
+
+                ct.ThrowIfCancellationRequested();
+            }
+
+            kDelayMs = 300;
+
+            agent.ComputeShortestPath(true);
+
+            while (true)
+            {
+                var response = agent.GetNextAction();
+                view.TextBox_AgentInfo_AppendLine(response.Type.ToString());
+
+                bool fBreak = false;
+
+                switch (response.Type)
+                {
+                    case EAgentActionType.GO_FORWARD:
+                        await GoForward(response.Value, ct);
+                        break;
+
+                    case EAgentActionType.TURN_LEFT:
+                        await TurnLeft(ct);
+                        break;
+
+                    case EAgentActionType.TURN_RIGHT:
+                        await TurnRight(ct);
+                        break;
+
+                    case EAgentActionType.NO_OPERATION:
+                        fBreak = true;
+                        break;
+                }
+
+                if (fBreak)
+                {
+                    break;
+                }
+
+                ct.ThrowIfCancellationRequested();
+            }
+
+            agent.ComputeShortestPath();
+
+            while (true)
+            {
+                var response = agent.GetNextAction();
+                view.TextBox_AgentInfo_AppendLine(response.Type.ToString());
+
+                bool fBreak = false;
+
+                switch (response.Type)
+                {
+                    case EAgentActionType.GO_FORWARD:
+                        await GoForward(response.Value, ct);
+                        break;
+
+                    case EAgentActionType.TURN_LEFT:
+                        await TurnLeft(ct);
+                        break;
+
+                    case EAgentActionType.TURN_RIGHT:
+                        await TurnRight(ct);
+                        break;
+
+                    case EAgentActionType.NO_OPERATION:
+                        fBreak = true;
+                        break;
+                }
+
+                if (fBreak)
+                {
+                    break;
+                }
+
+                ct.ThrowIfCancellationRequested();
+            }
+
+            sw.Stop();
+            view.TextBox_AgentInfo_AppendLine(sw.Elapsed.ToString());
         }
 
         public bool TryParse(string msg, out char cmd, out IList<string> args)
