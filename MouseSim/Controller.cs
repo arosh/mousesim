@@ -173,7 +173,8 @@ namespace MouseSim
             {
                 agent.LearnWallInfo();
                 var response = agent.Adachi();
-                view.TextBox_AgentInfo_AppendLine(response.Type.ToString());
+                // view.TextBox_AgentInfo_AppendLine(response.Type.ToString());
+                view.TextBox_AgentInfo_AppendLine(agent.LoopCount.ToString());
 
                 bool fBreak = false;
 
@@ -208,7 +209,8 @@ namespace MouseSim
             {
                 agent.LearnWallInfo();
                 var response = agent.Explore();
-                view.TextBox_AgentInfo_AppendLine(response.Type.ToString());
+                // view.TextBox_AgentInfo_AppendLine(response.Type.ToString());
+                view.TextBox_AgentInfo_AppendLine(agent.LoopCount.ToString());
 
                 bool fBreak = false;
 

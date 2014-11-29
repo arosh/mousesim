@@ -47,6 +47,8 @@ namespace MouseSim
         private int[, ,] canMove; // 4ビットに収まる = 2kB
         private AgentAction[, ,] prev;
 
+        public int LoopCount { get; private set; }
+
         // 上左下右で反時計回り
         private int[] dy = new int[] { -1, 0, 1, 0 };
         private int[] dx = new int[] { 0, -1, 0, 1 };
@@ -124,7 +126,8 @@ namespace MouseSim
         public AgentAction Explore(bool adachi = false)
         {
             var d = new int[size, size];
-            var vis = new bool[size, size];
+            var queue = new Queue<Tuple<int, int>>();
+            var inQueue = new bool[size, size];
 
             if (adachi == false)
             {
@@ -133,14 +136,16 @@ namespace MouseSim
                 {
                     for (int x = 0; x < size; x++)
                     {
-                        vis[y, x] = false;
                         if (visible[y, x] == false)
                         {
                             d[y, x] = 0;
+                            queue.Enqueue(new Tuple<int, int>(y, x));
+                            inQueue[y, x] = true;
                         }
                         else
                         {
                             d[y, x] = int.MaxValue;
+                            inQueue[y, x] = false;
                         }
                     }
                 }
@@ -152,56 +157,47 @@ namespace MouseSim
                 {
                     for (int x = 0; x < size; x++)
                     {
-                        vis[y, x] = false;
                         if (CheckGoal(y, x))
                         {
                             d[y, x] = 0;
+                            queue.Enqueue(new Tuple<int, int>(y, x));
+                            inQueue[y, x] = true;
                         }
                         else
                         {
                             d[y, x] = int.MaxValue;
+                            inQueue[y, x] = false;
                         }
                     }
                 }
             }
 
-            //ダイクストラよりもSPFAのほうが向いているかも？
-            // O(V^2)のダイクストラ開始
-            while (true)
+            LoopCount = 0;
+
+            while (queue.Count > 0)
             {
-                int vy = -1, vx = -1;
-
-                for (int y = 0; y < size; y++)
-                {
-                    for (int x = 0; x < size; x++)
-                    {
-                        if (vis[y, x] == false && ((vy == -1 && vx == -1) || d[y, x] < d[vy, vx]))
-                        {
-                            vy = y;
-                            vx = x;
-                        }
-                    }
-                }
-
-                // 未踏の地が無かったら、探索終了
-                if ((vy == -1 && vx == -1) || d[vy, vx] == int.MaxValue)
-                {
-                    break;
-                }
-
-                vis[vy, vx] = true;
-
+                var front = queue.Dequeue();
+                int y = front.Item1, x = front.Item2;
+                inQueue[y, x] = false;
                 for (int k = 0; k < 4; k++)
                 {
-                    if (wall[vy, vx, k] == false)
+                    LoopCount++;
+                    if (wall[y, x, k] == false)
                     {
-                        int ny = vy + dy[k];
-                        int nx = vx + dx[k];
-                        d[ny, nx] = Math.Min(d[ny, nx], d[vy, vx] + 1);
+                        int ny = y + dy[k];
+                        int nx = x + dx[k];
+                        if (d[ny, nx] > d[y, x] + 1)
+                        {
+                            d[ny, nx] = d[y, x] + 1;
+                            if (inQueue[ny, nx] == false)
+                            {
+                                queue.Enqueue(new Tuple<int, int>(ny, nx));
+                                inQueue[ny, nx] = true;
+                            }
+                        }
                     }
                 }
             }
-            // O(V^2)のダイクストラ終了
 
             // どちらに移動するか決めて、そっちに移動する
             if (wall[curY, curX, (dir + 0) % 4] == false && d[curY + dy[(dir + 0) % 4], curX + dx[(dir + 0) % 4]] == d[curY, curX] - 1)
